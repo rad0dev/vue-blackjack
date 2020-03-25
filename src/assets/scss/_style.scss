@@ -1,0 +1,11 @@
+html {
+  min-height: 100%;
+  display: flex;
+}
+
+body {
+  background: url("../img/background.jpg");
+  background-size: cover;
+  background-position: center;
+  flex: 1;
+}
