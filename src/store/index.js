@@ -8,25 +8,60 @@ export default new Vuex.Store({
     cardsRanks: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace'],
     cardsSuits: ['hearts', 'diamonds', 'clubs', 'spades'],
     deck: [],
-    playerCards: [],
-    dealerCards: [],
-    playerCardsScore: 0,
-    dealerCardsScore: 0,
+    dealtCards: {
+      dealer: [],
+      player: []
+    },
+    score: {
+      dealer: [],
+      player: []
+    },
     coins: 500,
     bet: 0
   },
+  getters: {
+    getPlayerCards (state) {
+      return state.dealtCards.player
+    },
+    getDealerCards (state) {
+      return state.dealtCards.dealer
+    },
+    getPlayerScore (state) {
+      return state.score.player
+    },
+    getDealerScore (state) {
+      return state.score.dealer
+    }
+  },
   mutations: {
+    clearCardsAndScore (state) {
+      state.dealtCards.player = []
+      state.dealtCards.dealer = []
+      state.score.player = [0, 0]
+      state.score.dealer = [0, 0]
+    },
     setDeck (state, newDeck) {
       state.deck = newDeck
     },
-    removeFromDeck (state, index) {
+    unsetFromDeck (state, index) {
       state.deck.splice(index, 1)
     },
-    putToPlayerDeck (state, card) {
-      state.playerCards.push(card)
+    addNewCard (state, { receiver, card }) {
+      state.dealtCards[receiver].push(card)
     },
-    putToDealerDeck (state, card) {
-      state.dealerCards.push(card)
+    addToScore (state, { receiver, card }) {
+      if (typeof card.rank !== 'number') {
+        if (card.rank === 'Ace') {
+          state.score[receiver][0] += 11
+          state.score[receiver][1] += 1
+        } else {
+          state.score[receiver][0] += 10
+          state.score[receiver][1] += 10
+        }
+      } else {
+        state.score[receiver][0] += card.rank
+        state.score[receiver][1] += card.rank
+      }
     }
   },
   actions: {
@@ -42,10 +77,26 @@ export default new Vuex.Store({
       }
       commit('setDeck', newDeck)
     },
-    drawRandomCard ({ state, commit }) {
+    drawRandomCard ({ state, commit }, receiver) {
       const cardIndex = Math.floor(Math.random() * (state.deck.length - 1))
-      commit('putToPlayerDeck', state.deck[cardIndex])
-      commit('removeFromDeck', cardIndex)
+      const payload = {
+        receiver,
+        card: state.deck[cardIndex]
+      }
+      commit('addNewCard', payload)
+      commit('addToScore', payload)
+      commit('unsetFromDeck', cardIndex)
+    },
+    newGame ({ dispatch, commit }) {
+      commit('clearCardsAndScore')
+      dispatch('prepareNewDeck')
+      for (let i = 0; i < 4; i++) {
+        let receiver = 'player'
+        if (i % 2) {
+          receiver = 'dealer'
+        }
+        dispatch('drawRandomCard', receiver)
+      }
     }
   }
 })
