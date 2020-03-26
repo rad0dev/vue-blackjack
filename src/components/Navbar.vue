@@ -1,5 +1,5 @@
 <template>
-  <b-navbar transparent="true">
+  <b-navbar :transparent="true">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <img

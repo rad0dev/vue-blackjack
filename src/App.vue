@@ -11,6 +11,9 @@ import Navbar from '@/components/Navbar.vue'
 export default {
   components: {
     appNavbar: Navbar
+  },
+  created () {
+    this.$store.dispatch('prepareNewDeck')
   }
 }
 </script>
