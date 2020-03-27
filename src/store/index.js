@@ -13,8 +13,8 @@ export default new Vuex.Store({
       player: []
     },
     score: {
-      dealer: [],
-      player: []
+      dealer: 0,
+      player: 0
     },
     coins: 500,
     bet: 0
@@ -52,19 +52,8 @@ export default new Vuex.Store({
     addNewCard (state, { receiver, card }) {
       state.dealtCards[receiver].push(card)
     },
-    addToScore (state, { receiver, card }) {
-      if (typeof card.rank !== 'number') {
-        if (card.rank === 'Ace') {
-          state.score[receiver][0] += 11
-          state.score[receiver][1] += 1
-        } else {
-          state.score[receiver][0] += 10
-          state.score[receiver][1] += 10
-        }
-      } else {
-        state.score[receiver][0] += card.rank
-        state.score[receiver][1] += card.rank
-      }
+    setScore (state, { receiver, score }) {
+      state.score[receiver] = score
     }
   },
   actions: {
@@ -80,15 +69,51 @@ export default new Vuex.Store({
       }
       commit('setDeck', newDeck)
     },
-    drawRandomCard ({ state, commit }, receiver) {
+    drawRandomCard ({ state, commit, dispatch }, receiver) {
       const cardIndex = Math.floor(Math.random() * (state.deck.length - 1))
       const payload = {
         receiver,
         card: state.deck[cardIndex]
       }
       commit('addNewCard', payload)
-      commit('addToScore', payload)
+      dispatch('countScore', receiver)
       commit('unsetFromDeck', cardIndex)
+    },
+    countScore ({ state, commit, dispatch }, receiver) {
+      let scoreSpread = [0]
+      let score = 0
+
+      for (const card of state.dealtCards[receiver]) {
+        if (card.rank === 'Ace') {
+          const newScoreSpread = []
+          scoreSpread.forEach((element) => {
+            newScoreSpread.push(element + 11, element + 1)
+          })
+          scoreSpread = newScoreSpread
+          continue
+        }
+        if (typeof card.rank !== 'number') {
+          scoreSpread = scoreSpread.map((element) => {
+            return element + 10
+          })
+          continue
+        }
+        scoreSpread = scoreSpread.map((element) => {
+          return element + card.rank
+        })
+      }
+
+      for (let i = 0; i <= scoreSpread.length; i++) {
+        if (scoreSpread[i] <= 21 || i === scoreSpread.length - 1) {
+          score = scoreSpread[i]
+          break
+        }
+      }
+
+      commit('setScore', {
+        receiver,
+        score
+      })
     },
     newGame ({ dispatch, commit }) {
       commit('clearCardsAndScore')

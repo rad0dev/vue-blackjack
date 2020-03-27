@@ -1,38 +1,19 @@
 <template>
   <div>
     <h1>Game page</h1>
-    <h6>{{ status }}</h6>
-    <div v-if="status === 'welcome'">
+    <div>
       <b-button @click="startGame">Start Game</b-button>
     </div>
-    <div v-if="status === 'bets'">
-      <input v-model="bet" type="number">
-      <b-button @click="placeBet">Bet</b-button>
-    </div>
-    <div v-if="status === 'dealing'">
-      dealing...
-    </div>
-    <div v-if="status === 'actions'">
+    <div>
       <b-button @click="hit">Hit</b-button>
       <b-button @click="stand">Stand</b-button>
     </div>
-    <div v-if="status === 'dealing-player'">
-      dealing...
+    <div>
+      {{ verdictMsg }}
     </div>
-    <div v-if="status === 'dealing-dealer'">
-      dealing...
-    </div>
-    <div v-if="status === 'verdict'">
-      You {{ verdict }}
-    </div>
-    <div v-if="
-    status === 'dealing' ||
-    status === 'actions' ||
-    status === 'dealing-player' ||
-    status === 'dealing-dealer'
-    ">
-      <div>dealer: {{ dealerScore | display-score }} | {{ dealerCards }}</div>
-      <div>player: {{ playerScore | display-score }} | | {{ playerCards }}</div>
+    <div>
+      <div>dealer: {{ dealerScore }} | {{ dealerCards }}</div>
+      <div>player: {{ playerScore }} | | {{ playerCards }}</div>
     </div>
   </div>
 </template>
@@ -49,66 +30,52 @@ export default {
   }),
   data () {
     return {
-      /*
-        statuses:
-        welcome
-        bets
-        dealing
-        actions
-        dealing-player
-        actions-dealer
-        dealing-dealer
-        verdict
-       */
-      status: 'welcome',
       bet: 0,
       rate: 0,
-      verdict: ''
+      verdictMsg: ''
     }
   },
   methods: {
     startGame () {
+      this.verdictMsg = ''
       this.$store.dispatch('newGame')
-      this.status = 'bets'
     },
     placeBet () {
       if (this.bet <= this.coins) {
         this.rate = this.bet
-        this.dealing()
       }
-    },
-    dealing () {
-      this.status = 'dealing'
-      setTimeout(() => {
-        this.status = 'actions'
-      }, 3000)
     },
     hit () {
       this.$store.dispatch('drawRandomCard', 'player')
-      this.status = this.checkScore()
+      if (this.playerScore >= 21) {
+        this.verdict()
+      }
     },
     stand () {
-      this.status = 'actions-dealer'
+      this.dealerTurn()
     },
-    checkScore () {
-      if (this.playerScore[0] === this.playerScore[1]) {
-        if (this.playerScore[0] > 21) {
-          return 'dealing-dealer'
-        }
-      } else {
-        if (this.playerScore[0] > 21 && this.playerScore[1] > 21) {
-          this.gameLost()
-          return 'dealing-dealer'
+    dealerTurn () {
+      if (this.playerScore <= 21) {
+        while (this.dealerScore < this.playerScore && this.dealerScore < 21) {
+          this.$store.dispatch('drawRandomCard', 'dealer')
         }
       }
-      return 'actions'
+      this.verdict()
     },
-    gameLost () {
-      console.log('gameLost')
-      this.status = 'dealing-dealer'
-    },
-    gameWon () {
-      console.log('gameWon')
+    verdict () {
+      if (this.dealerScore > 21) {
+        this.verdictMsg = 'Won'
+      } else if (this.playerScore > 21) {
+        this.verdictMsg = 'Lost'
+      } else {
+        if (this.dealerScore > this.playerScore) {
+          this.verdictMsg = 'Lost'
+        } else if (this.dealerScore === this.playerScore) {
+          this.verdictMsg = 'Push'
+        } else {
+          this.verdictMsg = 'Won'
+        }
+      }
     }
   }
 }
