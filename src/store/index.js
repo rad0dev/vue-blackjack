@@ -31,6 +31,9 @@ export default new Vuex.Store({
     },
     getDealerScore (state) {
       return state.score.dealer
+    },
+    getCoins (state) {
+      return state.coins
     }
   },
   mutations: {
