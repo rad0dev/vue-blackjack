@@ -17,7 +17,7 @@
         Wynik: {{ dealerScore }} <br>
         Karty:
         <span v-for="(card, index) in dealerCards"  :key="index">
-          <template v-if="!card.inverted">
+          <template v-if="!card.reversed">
             {{card.rank}}
             <span v-if="card.suit == 'hearts'">♥ </span>
             <span v-if="card.suit == 'spades'">♠ </span>
@@ -33,7 +33,7 @@
         <h1>Player</h1>
         Wynik: {{ playerScore }} <br>
         Karty:
-        <span v-for="(card, index) in dealerCards"  :key="index">
+        <span v-for="(card, index) in playerCards" :key="index">
           {{card.rank}}
           <span v-if="card.suit == 'hearts'">♥ </span>
           <span v-if="card.suit == 'spades'">♠ </span>
@@ -82,6 +82,7 @@ export default {
       this.dealerTurn()
     },
     dealerTurn () {
+      this.$store.dispatch('showDealerCards')
       if (this.playerScore <= 21) {
         while (this.dealerScore < this.playerScore && this.dealerScore < 21) {
           this.$store.dispatch('drawRandomCard', 'dealer')
