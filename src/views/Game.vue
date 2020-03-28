@@ -12,8 +12,35 @@
       {{ verdictMsg }}
     </div>
     <div>
-      <div>dealer: {{ dealerScore }} | {{ dealerCards }}</div>
-      <div>player: {{ playerScore }} | | {{ playerCards }}</div>
+      <div style="margin-top: 30px; margin-bottom: 30px">
+        <h1>Dealer</h1>
+        Wynik: {{ dealerScore }} <br>
+        Karty:
+        <span v-for="(card, index) in dealerCards"  :key="index">
+          <template v-if="!card.inverted">
+            {{card.rank}}
+            <span v-if="card.suit == 'hearts'">♥ </span>
+            <span v-if="card.suit == 'spades'">♠ </span>
+            <span v-if="card.suit == 'clubs'">♣ </span>
+            <span v-if="card.suit == 'diamonds'">♦ </span>
+          </template>
+          <template v-else>
+            ?
+          </template>
+        </span>
+      </div>
+      <div>
+        <h1>Player</h1>
+        Wynik: {{ playerScore }} <br>
+        Karty:
+        <span v-for="(card, index) in dealerCards"  :key="index">
+          {{card.rank}}
+          <span v-if="card.suit == 'hearts'">♥ </span>
+          <span v-if="card.suit == 'spades'">♠ </span>
+          <span v-if="card.suit == 'clubs'">♣ </span>
+          <span v-if="card.suit == 'diamonds'">♦ </span>
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -64,16 +91,16 @@ export default {
     },
     verdict () {
       if (this.dealerScore > 21) {
-        this.verdictMsg = 'Won'
+        this.verdictMsg = 'You Won'
       } else if (this.playerScore > 21) {
-        this.verdictMsg = 'Lost'
+        this.verdictMsg = 'You Lose'
       } else {
         if (this.dealerScore > this.playerScore) {
-          this.verdictMsg = 'Lost'
+          this.verdictMsg = 'You Lose'
         } else if (this.dealerScore === this.playerScore) {
           this.verdictMsg = 'Push'
         } else {
-          this.verdictMsg = 'Won'
+          this.verdictMsg = 'You Won'
         }
       }
     }

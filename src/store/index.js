@@ -71,11 +71,15 @@ export default new Vuex.Store({
     },
     drawRandomCard ({ state, commit, dispatch }, receiver) {
       const cardIndex = Math.floor(Math.random() * (state.deck.length - 1))
-      const payload = {
+      const inverted = !state.dealtCards.dealer.length && receiver === 'dealer'
+
+      commit('addNewCard', {
         receiver,
-        card: state.deck[cardIndex]
-      }
-      commit('addNewCard', payload)
+        card: {
+          inverted,
+          ...state.deck[cardIndex]
+        }
+      })
       dispatch('countScore', receiver)
       commit('unsetFromDeck', cardIndex)
     },
@@ -84,6 +88,9 @@ export default new Vuex.Store({
       let score = 0
 
       for (const card of state.dealtCards[receiver]) {
+        if (card.inverted) {
+          continue
+        }
         if (card.rank === 'Ace') {
           const newScoreSpread = []
           scoreSpread.forEach((element) => {
