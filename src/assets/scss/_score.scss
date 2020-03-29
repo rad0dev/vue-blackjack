@@ -1,0 +1,27 @@
+.score {
+  position: absolute;
+  top: 35px;
+  font-weight: 700;
+  font-size: 22px;
+
+  &__dealer {
+    left: 0;
+  }
+
+  &__player {
+    right: 0;
+  }
+
+  &__member {
+    text-transform: capitalize;
+  }
+
+  &__ammount {
+    display: inline-block;
+    background: rgba(0, 0, 0, .3);
+    line-height: 50px;
+    width: 50px;
+    text-align: center;
+    border-radius: 9999px;
+  }
+}

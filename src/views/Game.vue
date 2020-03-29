@@ -1,7 +1,9 @@
 <template>
   <div class="game-container">
     <dealer-mat></dealer-mat>
-    <game-interface></game-interface>
+    <transition name="fade" mode="out-in">
+      <component class="middle-mat" :is="activePhaseComponent"></component>
+    </transition>
     <player-mat></player-mat>
   </div>
 </template>
@@ -9,13 +11,40 @@
 <script>
 import PlayerMat from '../components/GameMat/PlayerMat'
 import DealerMat from '../components/GameMat/DealerMat'
-import GameInterface from '../components/GameInterface'
+import PlayerActions from '../components/ActivePhase/PlayerActions'
+import Verdict from '../components/ActivePhase/Verdict'
+import Welcome from '../components/ActivePhase/Welcome'
 
 export default {
+  computed: {
+    activePhaseComponent () {
+      return this.$store.state.activePhaseComponent
+    }
+  },
   components: {
     DealerMat,
     PlayerMat,
-    GameInterface
+    PlayerActions,
+    Verdict,
+    Welcome
   }
 }
 </script>
+
+<style scoped>
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter-active {
+    transition: opacity .5s;
+  }
+
+  .fade-leave {
+  }
+
+  .fade-leave-active {
+    transition: opacity .5s;
+    opacity: 0;
+  }
+</style>

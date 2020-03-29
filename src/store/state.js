@@ -11,5 +11,6 @@ export default () => ({
     player: 0
   },
   coins: 500,
-  verdict: ''
+  verdictMsg: '',
+  activePhaseComponent: 'Welcome'
 })

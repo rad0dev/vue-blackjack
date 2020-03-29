@@ -22,5 +22,11 @@ export const setScore = (state, { receiver, score }) => {
 }
 
 export const reverseDealerCard = (state) => {
-  state.dealtCards.dealer[0].reversed = false
+  const reversedCard = state.dealtCards.dealer.pop()
+  reversedCard.reversed = false
+  state.dealtCards.dealer.push(reversedCard)
+}
+
+export const setActivePhaseComponent = (state, component) => {
+  state.activePhaseComponent = component
 }

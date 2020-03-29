@@ -1,7 +1,9 @@
 <template>
-  <div class="game-mat">
-    <h1>Dealer</h1>
-    <score :score="score"></score>
+  <div class="game-mat game-mat__dealer">
+    <score
+      member="dealer"
+      :score="score"
+    ></score>
     <cards :cards="cards"></cards>
   </div>
 </template>

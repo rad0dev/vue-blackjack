@@ -1,0 +1,28 @@
+//<div class="coin"><span>100</span></div>
+.coin {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+  background: red;
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  border: 5px dashed white;
+  box-shadow: 0 0 0 1px red;
+
+  span {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 66px;
+    height: 66px;
+    border: 5px solid rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+  }
+}

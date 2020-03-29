@@ -1,0 +1,21 @@
+.navbar-menu {
+  .logo {
+    height: 100%;
+    width: 100%;
+  }
+
+  .navbar {
+    background: transparent;
+  }
+
+  .navbar-item,
+  .navbar-link {
+    color: #fff;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: #ddd;
+    }
+  }
+}

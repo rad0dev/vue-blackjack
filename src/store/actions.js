@@ -1,3 +1,4 @@
+/* eslint-disable no-unmodified-loop-condition */
 export const prepareNewDeck = ({ state, commit }) => {
   const newDeck = []
   for (const suit of state.cardsSuits) {
@@ -17,7 +18,7 @@ export const drawRandomCard = ({ state, commit, dispatch }, receiver) => {
     receiver,
     card: state.deck[cardIndex]
   }
-  if (!state.dealtCards.dealer.length && receiver === 'dealer') {
+  if (state.dealtCards.dealer.length === 1 && receiver === 'dealer') {
     payload.card.reversed = true
   }
   commit('addNewCard', payload)
@@ -28,7 +29,6 @@ export const drawRandomCard = ({ state, commit, dispatch }, receiver) => {
 export const countScore = ({ state, commit, dispatch }, receiver) => {
   let scoreSpread = [0]
   let score = 0
-
   for (const card of state.dealtCards[receiver]) {
     if (card.reversed) {
       continue
@@ -65,7 +65,9 @@ export const countScore = ({ state, commit, dispatch }, receiver) => {
   })
 }
 
-export const newGame = ({ dispatch, commit }) => {
+export const newGame = ({ dispatch, commit, state }) => {
+  state.verdictMsg = ''
+  commit('setActivePhaseComponent', 'PlayerActions')
   commit('clearCardsAndScore')
   dispatch('prepareNewDeck')
   for (let i = 0; i < 4; i++) {
@@ -77,33 +79,34 @@ export const newGame = ({ dispatch, commit }) => {
   }
 }
 
-export const showDealerCards = ({ commit, dispatch }) => {
+export const dealerTurn = ({ getters, commit, dispatch }) => {
   commit('reverseDealerCard')
   dispatch('countScore', 'dealer')
-}
-
-export const dealerTurn = () => {
-  this.$store.dispatch('showDealerCards')
-  if (this.playerScore <= 21) {
-    while (this.dealerScore < this.playerScore && this.dealerScore < 21) {
-      this.$store.dispatch('drawRandomCard', 'dealer')
+  if (getters.getPlayerScore <= 21) {
+    while (getters.getDealerScore < getters.getPlayerScore && getters.getDealerScore < 21) {
+      dispatch('drawRandomCard', 'dealer')
     }
   }
-  this.verdict()
+  dispatch('verdict')
 }
 
-export const verdict = () => {
-  if (this.dealerScore > 21) {
-    this.verdictMsg = 'You Won'
-  } else if (this.playerScore > 21) {
-    this.verdictMsg = 'You Lose'
+export const verdict = ({ state, commit, dispatch, getters }) => {
+  commit('reverseDealerCard')
+  if (getters.getDealerScore > 21) {
+    state.verdictMsg = 'You Won!'
+  } else if (getters.getPlayerScore > 21) {
+    state.verdictMsg = 'You Lost!'
   } else {
-    if (this.dealerScore > this.playerScore) {
-      this.verdictMsg = 'You Lose'
-    } else if (this.dealerScore === this.playerScore) {
-      this.verdictMsg = 'Push'
+    if (getters.getDealerScore > getters.getPlayerScore) {
+      state.verdictMsg = 'You Lost!'
+    } else if (getters.getDealerScore === getters.getPlayerScore) {
+      state.verdictMsg = 'Push!'
     } else {
-      this.verdictMsg = 'You Won'
+      state.verdictMsg = 'You Won!'
     }
   }
+  commit('setActivePhaseComponent', 'Verdict')
+  setTimeout(() => {
+    commit('setActivePhaseComponent', 'Welcome')
+  }, 3000)
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cards">
     <svg
       width="169.075"
       height="244.640"
@@ -9,6 +9,13 @@
       :key="index"
     >
       <use
+        v-if="card.reversed"
+        v-bind="{'xlink:href' : SvgCard + '#back' }"
+        x="0"
+        y="0"
+      />
+      <use
+        v-else
         v-bind="{'xlink:href' : makeCardHref(card) }"
         x="0"
         y="0"
@@ -20,10 +27,18 @@
 <script>
 import SvgCard from '../../assets/img/svg-cards.svg'
 export default {
-  props: ['cards'],
+  props: ['cards', 'member'],
   data () {
     return {
       SvgCard
+    }
+  },
+  watch: {
+    cards: {
+      deep: true,
+      handler (x) {
+        console.log(x)
+      }
     }
   },
   methods: {

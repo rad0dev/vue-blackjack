@@ -4,8 +4,14 @@ html {
 }
 
 body {
-  background: url("../img/background.jpg");
+  background: url("../img/background.png");
   background-size: cover;
   background-position: center;
   flex: 1;
+}
+
+.navbar-item,
+.navbar-link {
+  font-size: 18px;
+  font-weight: 700;
 }
