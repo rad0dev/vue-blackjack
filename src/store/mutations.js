@@ -1,8 +1,8 @@
 export const clearCardsAndScore = (state) => {
   state.dealtCards.player = []
   state.dealtCards.dealer = []
-  state.score.player = [0, 0]
-  state.score.dealer = [0, 0]
+  state.score.player = 0
+  state.score.dealer = 0
 }
 
 export const setDeck = (state, newDeck) => {

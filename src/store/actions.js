@@ -65,10 +65,16 @@ export const countScore = ({ state, commit, dispatch }, receiver) => {
   })
 }
 
+export const hit = ({ dispatch, getters }) => {
+  dispatch('drawRandomCard', 'player')
+  if (getters.getPlayerScore >= 21) {
+    dispatch('dealerTurn', 'player')
+  }
+}
+
 export const newGame = ({ dispatch, commit, state }) => {
   state.verdictMsg = ''
   commit('setActivePhaseComponent', 'PlayerActions')
-  commit('clearCardsAndScore')
   dispatch('prepareNewDeck')
   for (let i = 0; i < 4; i++) {
     let receiver = 'player'
@@ -91,7 +97,6 @@ export const dealerTurn = ({ getters, commit, dispatch }) => {
 }
 
 export const verdict = ({ state, commit, dispatch, getters }) => {
-  commit('reverseDealerCard')
   if (getters.getDealerScore > 21) {
     state.verdictMsg = 'You Won!'
   } else if (getters.getPlayerScore > 21) {
@@ -107,6 +112,7 @@ export const verdict = ({ state, commit, dispatch, getters }) => {
   }
   commit('setActivePhaseComponent', 'Verdict')
   setTimeout(() => {
+    commit('clearCardsAndScore')
     commit('setActivePhaseComponent', 'Welcome')
-  }, 3000)
+  }, 4000)
 }
