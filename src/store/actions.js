@@ -77,23 +77,27 @@ export const newGame = ({ dispatch, commit, state }) => {
   commit('setActivePhaseComponent', 'PlayerActions')
   dispatch('prepareNewDeck')
   for (let i = 0; i < 4; i++) {
-    let receiver = 'player'
-    if (i % 2) {
-      receiver = 'dealer'
-    }
-    dispatch('drawRandomCard', receiver)
+    setTimeout(() => {
+      let receiver = 'player'
+      if (i % 2) {
+        receiver = 'dealer'
+      }
+      dispatch('drawRandomCard', receiver)
+    }, i * 500)
   }
 }
 
 export const dealerTurn = ({ getters, commit, dispatch }) => {
   commit('reverseDealerCard')
-  dispatch('countScore', 'dealer')
-  if (getters.getPlayerScore <= 21) {
-    while (getters.getDealerScore < getters.getPlayerScore && getters.getDealerScore < 21) {
-      dispatch('drawRandomCard', 'dealer')
+  setTimeout(() => {
+    dispatch('countScore', 'dealer')
+    if (getters.getPlayerScore <= 21) {
+      while (getters.getDealerScore < getters.getPlayerScore && getters.getDealerScore < 21) {
+        dispatch('drawRandomCard', 'dealer')
+      }
     }
-  }
-  dispatch('verdict')
+    dispatch('verdict')
+  }, 500)
 }
 
 export const verdict = ({ state, commit, dispatch, getters }) => {

@@ -1,0 +1,13 @@
+.cards {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding-left: calc(50%);
+
+  &__card {
+    margin-left: -144px;
+  }
+}

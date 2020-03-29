@@ -1,5 +1,5 @@
 <template>
-  <div class="game-mat game-mat__player">
+  <div class="game-mat">
     <score
       member="player"
       :score="score"
