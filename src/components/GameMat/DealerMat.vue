@@ -16,8 +16,8 @@ import Cards from './Cards'
 export default {
   components: { Score, Cards },
   computed: mapGetters({
-    cards: 'getDealerCards',
-    score: 'getDealerScore'
+    cards: 'cards/getDealerCards',
+    score: 'cards/getDealerScore'
   })
 }
 </script>

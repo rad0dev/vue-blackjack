@@ -35,12 +35,12 @@
 export default {
   computed: {
     coins () {
-      return this.$store.state.coins
+      return this.$store.state.bets.coins
     }
   },
   methods: {
     raiseBet (amount) {
-      this.$store.dispatch('raiseBet', amount)
+      this.$store.dispatch('bets/raiseBet', amount)
     }
   }
 }

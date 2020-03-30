@@ -37,18 +37,18 @@
 export default {
   computed: {
     bet () {
-      return this.$store.state.bet
+      return this.$store.state.bets.bet
     },
     betAmount () {
-      return this.$store.getters.getBetAmount
+      return this.$store.getters['bets/getBetAmount']
     }
   },
   methods: {
     reduceBet () {
-      this.$store.dispatch('reduceBet')
+      this.$store.dispatch('bets/reduceBet')
     },
     makeDeal () {
-      this.$store.dispatch('makeDeal')
+      this.$store.dispatch('bets/makeDeal')
     }
   }
 }

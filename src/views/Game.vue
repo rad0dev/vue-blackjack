@@ -2,7 +2,7 @@
   <div class="game-container">
     <dealer-mat></dealer-mat>
     <transition name="fade" mode="out-in">
-      <component class="middle-mat" :is="activePhaseComponent"></component>
+      <component class="middle-mat" :is="activePhaseComponent || 'Empty'"></component>
     </transition>
     <player-mat></player-mat>
   </div>
@@ -15,6 +15,7 @@ import PlayerActions from '../components/ActivePhase/PlayerActions'
 import Verdict from '../components/ActivePhase/Verdict'
 import Welcome from '../components/ActivePhase/Welcome'
 import Bets from '../components/ActivePhase/Bets'
+import Empty from '../components/ActivePhase/Empty'
 
 export default {
   computed: {
@@ -28,7 +29,8 @@ export default {
     PlayerActions,
     Verdict,
     Welcome,
-    Bets
+    Bets,
+    Empty
   }
 }
 </script>

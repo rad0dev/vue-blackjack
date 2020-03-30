@@ -36,14 +36,6 @@ export default {
       SvgCard
     }
   },
-  watch: {
-    cards: {
-      deep: true,
-      handler (x) {
-        console.log(x)
-      }
-    }
-  },
   methods: {
     makeCardHref (card) {
       if (card.reversed) return SvgCard + '#back'
@@ -55,23 +47,6 @@ export default {
 </script>
 
 <style>
-
-  .fade-enter {
-    opacity: 0;
-  }
-
-  .fade-enter-active {
-    transition: opacity .5s;
-  }
-
-  .fade-leave {
-  }
-
-  .fade-leave-active {
-    transition: opacity .5s;
-    opacity: 0;
-  }
-
   .deal-enter {
     opacity: 0;
   }
@@ -79,10 +54,6 @@ export default {
   .deal-enter-active {
     animation: deal-in .5s ease-out forwards;
     transition: opacity .5s;
-  }
-
-  .deal-leave {
-
   }
 
   .deal-leave-active {

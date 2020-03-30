@@ -4,13 +4,13 @@
       member="player"
       :score="score"
     ></score>
+    <coins
+      v-if="activePhase === 'Bets'"
+    ></coins>
     <cards
-      v-if="activePhase != 'Bets'"
+      v-else
       :cards="cards"
     ></cards>
-    <coins
-      v-else
-    ></coins>
 
   </div>
 </template>
@@ -25,8 +25,8 @@ export default {
   components: { Score, Cards, Coins },
   computed: {
     ...mapGetters({
-      cards: 'getPlayerCards',
-      score: 'getPlayerScore'
+      cards: 'cards/getPlayerCards',
+      score: 'cards/getPlayerScore'
     }),
     activePhase () {
       return this.$store.state.activePhaseComponent

@@ -10,7 +10,7 @@ export default {
   props: ['score', 'member'],
   computed: {
     coins () {
-      return this.$store.state.coins
+      return this.$store.state.bets.coins
     }
   }
 }
