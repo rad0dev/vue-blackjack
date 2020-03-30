@@ -11,6 +11,7 @@ export default () => ({
     player: 0
   },
   coins: 500,
+  bet: [],
   verdictMsg: '',
-  activePhaseComponent: 'Welcome'
+  activePhaseComponent: 'Bets'
 })

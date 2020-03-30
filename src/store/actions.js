@@ -83,40 +83,77 @@ export const newGame = ({ dispatch, commit, state }) => {
         receiver = 'dealer'
       }
       dispatch('drawRandomCard', receiver)
+      console.log('i', i)
+      if (i === 3) {
+        commit('setActivePhaseComponent', 'PlayerActions')
+      }
     }, i * 500)
   }
 }
 
 export const dealerTurn = ({ getters, commit, dispatch }) => {
   commit('reverseDealerCard')
-  setTimeout(() => {
-    dispatch('countScore', 'dealer')
-    if (getters.getPlayerScore <= 21) {
-      while (getters.getDealerScore < getters.getPlayerScore && getters.getDealerScore < 21) {
+  dispatch('countScore', 'dealer')
+  const nextDealerCard = () => {
+    setTimeout(() => {
+      if (getters.getDealerScore < getters.getPlayerScore && getters.getDealerScore < 17) {
         dispatch('drawRandomCard', 'dealer')
+        nextDealerCard()
+      } else {
+        dispatch('verdict')
       }
-    }
-    dispatch('verdict')
-  }, 500)
+    }, 500)
+  }
+  nextDealerCard()
 }
 
-export const verdict = ({ state, commit, dispatch, getters }) => {
+export const verdict = ({ getters, dispatch, commit }) => {
   if (getters.getDealerScore > 21) {
-    state.verdictMsg = 'You Won!'
+    dispatch('winBet')
   } else if (getters.getPlayerScore > 21) {
-    state.verdictMsg = 'You Lost!'
+    dispatch('loseBet')
   } else {
     if (getters.getDealerScore > getters.getPlayerScore) {
-      state.verdictMsg = 'You Lost!'
+      dispatch('loseBet')
     } else if (getters.getDealerScore === getters.getPlayerScore) {
-      state.verdictMsg = 'Push!'
+      dispatch('pushBet')
     } else {
-      state.verdictMsg = 'You Won!'
+      dispatch('winBet')
     }
   }
   commit('setActivePhaseComponent', 'Verdict')
   setTimeout(() => {
+    commit('clearBet')
     commit('clearCardsAndScore')
-    commit('setActivePhaseComponent', 'Welcome')
+    commit('setActivePhaseComponent', 'Bets')
   }, 4000)
+}
+
+export const makeDeal = ({ dispatch }) => {
+  dispatch('newGame')
+}
+
+export const raiseBet = ({ state, commit }, amount) => {
+  commit('raiseBet', amount)
+  commit('setCoins', state.coins - amount)
+}
+
+export const reduceBet = ({ state, commit }) => {
+  const amount = state.bet[state.bet.length - 1]
+  commit('reduceBet')
+  commit('setCoins', state.coins + amount)
+}
+
+export const loseBet = ({ state }) => {
+  state.verdictMsg = 'You Lost!'
+}
+
+export const winBet = ({ state, commit, getters }) => {
+  state.verdictMsg = 'You Won!'
+  commit('setCoins', state.coins + getters.getBetAmount * 2)
+}
+
+export const pushBet = ({ state, commit, getters }) => {
+  state.verdictMsg = 'Push!'
+  commit('setCoins', state.coins + getters.getBetAmount)
 }

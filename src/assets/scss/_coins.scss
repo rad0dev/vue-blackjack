@@ -1,0 +1,56 @@
+.coins {
+  display: flex;
+}
+
+.coins-to-bet {
+  display: flex;
+
+  .coin {
+    position: absolute;
+  }
+}
+
+.coin {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+  background-color: #55acee;
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  border: 5px dashed white;
+  box-shadow: 0 0 0 1px #55acee;
+  margin: 0 .5em .5em;
+  cursor: pointer;
+
+  &__blue {
+    background-color: blue;
+    box-shadow: 0 0 0 1px blue;
+  }
+
+  &__green {
+    background-color: chartreuse;
+    box-shadow: 0 0 0 1px chartreuse;
+  }
+
+  &__red {
+    background-color: darkred;
+    box-shadow: 0 0 0 1px darkred;
+  }
+
+  span {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 66px;
+    height: 66px;
+    border: 5px solid rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+  }
+}

@@ -17,10 +17,6 @@ export const addNewCard = (state, { receiver, card }) => {
   state.dealtCards[receiver].push(card)
 }
 
-export const setScore = (state, { receiver, score }) => {
-  state.score[receiver] = score
-}
-
 export const reverseDealerCard = (state) => {
   const reversedCard = state.dealtCards.dealer.pop()
   reversedCard.reversed = false
@@ -29,4 +25,24 @@ export const reverseDealerCard = (state) => {
 
 export const setActivePhaseComponent = (state, component) => {
   state.activePhaseComponent = component
+}
+
+export const setScore = (state, { receiver, score }) => {
+  state.score[receiver] = score
+}
+
+export const raiseBet = (state, bet) => {
+  state.bet.push(parseInt(bet))
+}
+
+export const reduceBet = (state) => {
+  state.bet.pop()
+}
+
+export const clearBet = (state) => {
+  state.bet = []
+}
+
+export const setCoins = (state, coins) => {
+  state.coins = parseInt(coins)
 }

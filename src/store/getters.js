@@ -13,3 +13,15 @@ export const getPlayerScore = (state) => {
 export const getDealerScore = (state) => {
   return state.score.dealer
 }
+
+export const getBetAmount = (state) => {
+  if (!state.bet.length) {
+    console.log('jee')
+    return 0
+  }
+  console.log('dalyj')
+  const score = state.bet.reduce((a, b) => {
+    return a + b
+  })
+  return score
+}

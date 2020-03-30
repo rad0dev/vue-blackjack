@@ -1,0 +1,31 @@
+.bet {
+  height: 150px;
+
+  &__coins,
+  &__score,
+  &__actions {
+    min-width: 120px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__coins {
+    .coin {
+      position: absolute;
+    }
+  }
+
+  &__score {
+    &__amount {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 30px;
+    }
+  }
+
+  &__actions {
+
+  }
+}

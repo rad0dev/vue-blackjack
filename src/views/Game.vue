@@ -14,6 +14,7 @@ import DealerMat from '../components/GameMat/DealerMat'
 import PlayerActions from '../components/ActivePhase/PlayerActions'
 import Verdict from '../components/ActivePhase/Verdict'
 import Welcome from '../components/ActivePhase/Welcome'
+import Bets from '../components/ActivePhase/Bets'
 
 export default {
   computed: {
@@ -26,7 +27,8 @@ export default {
     PlayerMat,
     PlayerActions,
     Verdict,
-    Welcome
+    Welcome,
+    Bets
   }
 }
 </script>
