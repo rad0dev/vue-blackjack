@@ -3,7 +3,7 @@
     <b-button
       size="is-large"
       type="is-success"
-      @click="hit"
+      @click="hit()"
       class="player-actions__button"
     >
       Hit
@@ -11,7 +11,7 @@
     <b-button
       size="is-large"
       type="is-success"
-      @click="dealerTurn"
+      @click="startDealerTurn()"
       class="player-actions__button"
     >
       Stand
@@ -26,7 +26,7 @@ export default {
   methods: {
     ...mapActions([
       'hit',
-      'dealerTurn'
+      'startDealerTurn'
     ])
   }
 }

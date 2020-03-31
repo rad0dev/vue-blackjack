@@ -17,7 +17,7 @@ const getters = {
 
 const actions = {
   makeDeal ({ dispatch }) {
-    dispatch('newGame', null, { root: true })
+    return dispatch('newGame', null, { root: true })
   },
   raiseBet ({ state, commit }, amount) {
     commit('raiseBet', amount)
@@ -27,17 +27,6 @@ const actions = {
     const amount = state.bet[state.bet.length - 1]
     commit('reduceBet')
     commit('setCoins', state.coins + amount)
-  },
-  loseBet ({ rootState }) {
-    rootState.verdictMsg = 'You Lost!'
-  },
-  winBet ({ rootState, state, commit, getters }) {
-    rootState.verdictMsg = 'You Won!'
-    commit('setCoins', state.coins + getters.getBetAmount * 2)
-  },
-  pushBet ({ rootState, state, commit, getters }) {
-    rootState.verdictMsg = 'Push!'
-    commit('setCoins', state.coins + getters.getBetAmount)
   }
 }
 
