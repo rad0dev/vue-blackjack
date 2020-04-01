@@ -8,7 +8,7 @@
 export default {
   computed: {
     verdictMsg () {
-      return this.$store.state.verdictMsg
+      return this.$store.state.verdict.verdictMsg
     }
   },
   methods: {
