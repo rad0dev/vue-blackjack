@@ -9,3 +9,14 @@ export const canSplit = (state) => {
   }
   return false
 }
+
+export const canDouble = (state) => {
+  if (
+    !state.cards.dealtCards.playerSplitted.length &&
+    state.cards.dealtCards.player.length === 2 &&
+    state.bets.funds >= state.bets.betPrimary
+  ) {
+    return true
+  }
+  return false
+}

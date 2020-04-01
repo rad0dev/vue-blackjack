@@ -31,9 +31,13 @@ const actions = {
     commit('popCoin')
     commit('setFunds', state.funds + amount)
   },
-  doubleBet ({ state, commit }) {
+  splitBet ({ state, commit }) {
     commit('setFunds', state.funds - state.betPrimary)
     commit('setBetSecondary', state.betPrimary)
+  },
+  doubleBet ({ state, commit }) {
+    commit('setFunds', state.funds - state.betPrimary)
+    commit('setBetPrimary', state.betPrimary * 2)
   }
 }
 

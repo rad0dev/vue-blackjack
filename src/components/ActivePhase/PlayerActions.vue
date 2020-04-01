@@ -25,22 +25,31 @@
     >
       Split
     </b-button>
+    <b-button
+      size="is-large"
+      type="is-success"
+      v-if="canDouble"
+      @click="double()"
+      class="player-actions__button"
+    >
+      Double
+    </b-button>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   methods: mapActions([
     'hit',
     'stand',
-    'split'
+    'split',
+    'double'
   ]),
-  computed: {
-    canSplit () {
-      return this.$store.getters.canSplit
-    }
-  }
+  computed: mapGetters([
+    'canSplit',
+    'canDouble'
+  ])
 }
 </script>

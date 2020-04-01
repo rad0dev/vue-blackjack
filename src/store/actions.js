@@ -67,10 +67,17 @@ export const stand = ({ dispatch, getters, commit }) => {
 export const split = ({ commit, dispatch }) => {
   commit('setActivePhaseComponent')
   commit('cards/splitPlayerDecks')
-  dispatch('bets/doubleBet')
+  dispatch('bets/splitBet')
   dispatch('cards/drawRandomCard', 'player')
   dispatch('startPlayerTurn')
   commit('setActivePhaseComponent', 'PlayerActions')
+}
+
+export const double = ({ commit, dispatch }) => {
+  commit('setActivePhaseComponent')
+  dispatch('bets/doubleBet')
+  dispatch('cards/drawRandomCard', 'player')
+  dispatch('startDealerTurn')
 }
 
 export const startDealerTurn = ({ getters, commit, dispatch }) => {
