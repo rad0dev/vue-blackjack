@@ -11,10 +11,19 @@
     <b-button
       size="is-large"
       type="is-success"
-      @click="startDealerTurn()"
+      @click="stand()"
       class="player-actions__button"
     >
       Stand
+    </b-button>
+    <b-button
+      size="is-large"
+      type="is-success"
+      v-if="canSplit"
+      @click="split()"
+      class="player-actions__button"
+    >
+      Split
     </b-button>
   </div>
 </template>
@@ -23,11 +32,15 @@
 import { mapActions } from 'vuex'
 
 export default {
-  methods: {
-    ...mapActions([
-      'hit',
-      'startDealerTurn'
-    ])
+  methods: mapActions([
+    'hit',
+    'stand',
+    'split'
+  ]),
+  computed: {
+    canSplit () {
+      return this.$store.getters.canSplit
+    }
   }
 }
 </script>

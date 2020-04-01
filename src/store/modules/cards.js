@@ -4,7 +4,8 @@ const state = {
   deck: [],
   dealtCards: {
     dealer: [],
-    player: []
+    player: [],
+    playerSplitted: []
   },
   score: {
     dealer: 0,
@@ -19,11 +20,17 @@ const getters = {
   getDealerCards: (state) => {
     return state.dealtCards.dealer
   },
+  getPlayerSplittedCards: (state) => {
+    return state.dealtCards.playerSplitted
+  },
   getPlayerScore: (state) => {
     return state.score.player
   },
   getDealerScore: (state) => {
     return state.score.dealer
+  },
+  hasSplittedDeckToPlay: (state) => {
+    return state.dealtCards.playerSplitted.length === 1
   }
 }
 
@@ -90,12 +97,18 @@ const actions = {
       receiver,
       score
     })
+  },
+  replaceSplittedCards: ({ state, commit }) => {
+    const cards = state.dealtCards.player
+    commit('setPlayerDealtCards', state.dealtCards.playerSplitted)
+    commit('setPlayerSplittedDealtCards', cards)
   }
 }
 
 const mutations = {
   clearCardsAndScore: (state) => {
     state.dealtCards.player = []
+    state.dealtCards.playerSplitted = []
     state.dealtCards.dealer = []
     state.score.player = 0
     state.score.dealer = 0
@@ -116,6 +129,17 @@ const mutations = {
   },
   setScore: (state, { receiver, score }) => {
     state.score[receiver] = score
+  },
+  splitPlayerDecks: (state) => {
+    state.dealtCards.playerSplitted.push(
+      state.dealtCards.player.pop()
+    )
+  },
+  setPlayerDealtCards: (state, cards) => {
+    state.dealtCards.player = cards || []
+  },
+  setPlayerSplittedDealtCards: (state, cards) => {
+    state.dealtCards.playerSplitted = cards || []
   }
 }
 

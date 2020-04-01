@@ -1,30 +1,30 @@
 <template>
   <div class="coins">
     <div
-      @click="raiseBet(1)"
+      @click="tossACoin(1)"
       class="coin"
-      v-if="coins >= 1"
+      v-if="funds >= 1"
     >
       <span>1</span>
     </div>
     <div
-      @click="raiseBet(10)"
+      @click="tossACoin(10)"
       class="coin coin__blue"
-      v-if="coins >= 10"
+      v-if="funds >= 10"
     >
       <span>10</span>
     </div>
     <div
-      @click="raiseBet(100)"
+      @click="tossACoin(100)"
       class="coin coin__green"
-      v-if="coins >= 100"
+      v-if="funds >= 100"
     >
       <span>100</span>
     </div>
     <div
-      @click="raiseBet(500)"
+      @click="tossACoin(500)"
       class="coin coin__red"
-      v-if="coins >= 500"
+      v-if="funds >= 500"
     >
       <span>500</span>
     </div>
@@ -34,13 +34,13 @@
 <script>
 export default {
   computed: {
-    coins () {
-      return this.$store.state.bets.coins
+    funds () {
+      return this.$store.state.bets.funds
     }
   },
   methods: {
-    raiseBet (amount) {
-      this.$store.dispatch('bets/raiseBet', amount)
+    tossACoin (amount) {
+      this.$store.dispatch('bets/tossACoin', amount)
     }
   }
 }

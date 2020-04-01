@@ -4,6 +4,8 @@
       member="player"
       :score="score"
     ></score>
+    <splitted-cards
+      v-if="splittedCards.length"></splitted-cards>
     <coins
       v-if="activePhase === 'Bets'"
     ></coins>
@@ -11,7 +13,6 @@
       v-else
       :cards="cards"
     ></cards>
-
   </div>
 </template>
 
@@ -20,12 +21,14 @@ import { mapGetters } from 'vuex'
 import Score from './Score'
 import Cards from './Cards'
 import Coins from './Coins'
+import SplittedCards from './SplittedCards'
 
 export default {
-  components: { Score, Cards, Coins },
+  components: { Score, Cards, Coins, SplittedCards },
   computed: {
     ...mapGetters({
       cards: 'cards/getPlayerCards',
+      splittedCards: 'cards/getPlayerSplittedCards',
       score: 'cards/getPlayerScore'
     }),
     activePhase () {

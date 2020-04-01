@@ -30,7 +30,7 @@
 <script>
 import SvgCard from '../../assets/img/svg-cards.svg'
 export default {
-  props: ['cards', 'member'],
+  props: ['cards'],
   data () {
     return {
       SvgCard

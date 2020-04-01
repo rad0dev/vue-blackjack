@@ -2,8 +2,8 @@
   <div class="bet">
     <div class="bet__coins">
       <div
-        v-for="(coin, index) in bet"
-        @click="reduceBet()"
+        v-for="(coin, index) in betCoins"
+        @click="pickupACoin()"
         class="coin"
         :class="{
           'coin__blue': coin === 10,
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="bet__score">
-      <div class="bet__score__amount">${{ betAmount }}</div>
+      <div class="bet__score__amount">${{ betCoinsAmount }}</div>
     </div>
     <div class="bet__actions">
       <b-button
@@ -25,7 +25,7 @@
         type="is-success"
         @click="makeDeal"
         class="bet__actions__button"
-        v-if="betAmount > 0"
+        v-if="betCoinsAmount > 0"
       >
         Deal
       </b-button>
@@ -36,19 +36,24 @@
 <script>
 export default {
   computed: {
-    bet () {
-      return this.$store.state.bets.bet
+    betCoins () {
+      return this.$store.state.bets.betCoins
     },
-    betAmount () {
-      return this.$store.getters['bets/getBetAmount']
+    betCoinsAmount () {
+      if (!this.betCoins.length) {
+        return 0
+      }
+      return this.betCoins.reduce((a, b) => {
+        return a + b
+      })
     }
   },
   methods: {
-    reduceBet () {
-      this.$store.dispatch('bets/reduceBet')
+    pickupACoin () {
+      this.$store.dispatch('bets/pickupACoin')
     },
     makeDeal () {
-      this.$store.dispatch('bets/makeDeal')
+      this.$store.dispatch('newGame')
     }
   }
 }

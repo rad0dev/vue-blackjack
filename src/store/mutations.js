@@ -1,5 +1,5 @@
 export const setActivePhaseComponent = (state, component) => {
-  state.activePhaseComponent = component
+  state.activePhaseComponent = component || ''
 }
 
 export const setVerdictMsg = (state, msg) => {

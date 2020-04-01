@@ -1,47 +1,60 @@
 const state = {
-  coins: 500,
-  bet: []
+  funds: 500,
+  betCoins: [],
+  betPrimary: 0,
+  betSecondary: 0
 }
 
 const getters = {
-  getBetAmount: (state) => {
-    if (!state.bet.length) {
-      return 0
-    }
-    const score = state.bet.reduce((a, b) => {
-      return a + b
-    })
-    return score
+  getBet (state) {
+    return state.betSecondary || state.betPrimary
   }
 }
 
 const actions = {
-  makeDeal ({ dispatch }) {
-    return dispatch('newGame', null, { root: true })
+  countCoins ({ state, commit }) {
+    let bet = 0
+    if (state.betCoins.length) {
+      bet = state.betCoins.reduce((a, b) => {
+        return a + b
+      })
+    }
+    commit('setBetPrimary', bet)
+    commit('clearBetCoins')
   },
-  raiseBet ({ state, commit }, amount) {
-    commit('raiseBet', amount)
-    commit('setCoins', state.coins - amount)
+  tossACoin ({ state, commit }, amount) {
+    commit('pushCoin', amount)
+    commit('setFunds', state.funds - amount)
   },
-  reduceBet ({ state, commit }) {
-    const amount = state.bet[state.bet.length - 1]
-    commit('reduceBet')
-    commit('setCoins', state.coins + amount)
+  pickupACoin ({ state, commit }) {
+    const amount = state.betCoins[state.betCoins.length - 1]
+    commit('popCoin')
+    commit('setFunds', state.funds + amount)
+  },
+  doubleBet ({ state, commit }) {
+    commit('setFunds', state.funds - state.betPrimary)
+    commit('setBetSecondary', state.betPrimary)
   }
 }
 
 const mutations = {
-  raiseBet (state, bet) {
-    state.bet.push(parseInt(bet))
+  pushCoin (state, bet) {
+    state.betCoins.push(parseInt(bet))
   },
-  reduceBet (state) {
-    state.bet.pop()
+  popCoin (state) {
+    state.betCoins.pop()
   },
-  clearBet (state) {
-    state.bet = []
+  clearBetCoins (state) {
+    state.betCoins = []
   },
-  setCoins (state, coins) {
-    state.coins = parseInt(coins)
+  setFunds (state, funds) {
+    state.funds = parseInt(funds)
+  },
+  setBetPrimary (state, bet) {
+    state.betPrimary = parseInt(bet || 0)
+  },
+  setBetSecondary (state, bet) {
+    state.betSecondary = parseInt(bet || 0)
   }
 }
 
