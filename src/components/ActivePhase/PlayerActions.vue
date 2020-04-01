@@ -34,6 +34,15 @@
     >
       Double
     </b-button>
+    <b-button
+      size="is-large"
+      type="is-success"
+      v-if="canSurrender"
+      @click="surrender()"
+      class="player-actions__button"
+    >
+      Surrender
+    </b-button>
   </div>
 </template>
 
@@ -45,11 +54,13 @@ export default {
     'hit',
     'stand',
     'split',
-    'double'
+    'double',
+    'surrender'
   ]),
   computed: mapGetters([
     'canSplit',
-    'canDouble'
+    'canDouble',
+    'canSurrender'
   ])
 }
 </script>

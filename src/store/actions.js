@@ -80,6 +80,13 @@ export const double = ({ commit, dispatch }) => {
   dispatch('startDealerTurn')
 }
 
+export const surrender = ({ commit, dispatch }) => {
+  commit('setActivePhaseComponent')
+  commit('cards/reverseDealerCard')
+  dispatch('cards/countScore', 'dealer')
+  dispatch('verdict/verdict', 'surrender')
+}
+
 export const startDealerTurn = ({ getters, commit, dispatch }) => {
   commit('cards/reverseDealerCard')
   dispatch('cards/countScore', 'dealer')

@@ -64,6 +64,9 @@ const actions = {
       case 'push':
         dispatch('verdictPush')
         break
+      case 'surrender':
+        dispatch('verdictSurrender')
+        break
     }
     commit('setActivePhaseComponent', 'Verdict', { root: true })
 
@@ -99,6 +102,10 @@ const actions = {
   verdictBlackjack: ({ rootState, rootGetters, commit }) => {
     commit('setVerdictMsg', 'Blackjack!')
     commit('bets/setFunds', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] * 2.5), { root: true })
+  },
+  verdictSurrender: ({ rootState, rootGetters, commit }) => {
+    commit('setVerdictMsg', 'Surrender')
+    commit('bets/setFunds', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] / 2), { root: true })
   }
 }
 

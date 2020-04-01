@@ -20,3 +20,13 @@ export const canDouble = (state) => {
   }
   return false
 }
+
+export const canSurrender = (state) => {
+  if (
+    !state.cards.dealtCards.playerSplitted.length &&
+    state.cards.dealtCards.player.length === 2
+  ) {
+    return true
+  }
+  return false
+}
