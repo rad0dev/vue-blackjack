@@ -145,7 +145,7 @@ export const drawDealersCards = ({ getters, dispatch }) => {
       }
       dispatch('cards/drawRandomCard', 'dealer')
       drawNextCard()
-    }, 500)
+    }, 600)
   }
   drawNextCard()
 }
