@@ -41,14 +41,14 @@ export default {
   }
 
   .fade-enter-active {
-    transition: opacity .5s;
+    transition: opacity .35s;
   }
 
   .fade-leave {
   }
 
   .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .35s;
     opacity: 0;
   }
 </style>

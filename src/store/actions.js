@@ -8,13 +8,26 @@ export const newGame = ({ dispatch, commit, state }) => {
   dispatch('bets/countCoins')
   // deal 4 cards from deck
   for (let i = 0; i < 4; i++) {
-    setTimeout(() => {
-      dispatch('cards/drawRandomCard', i % 2 ? 'dealer' : 'player')
-      if (i === 3) {
-        dispatch('startPlayerTurn')
-      }
-    }, i * 500)
+    setTimeout(() => dispatch('cards/drawRandomCard', i % 2 ? 'dealer' : 'player'), i * 500)
   }
+  setTimeout(() => dispatch('blackjacksCheck'), 2000)
+}
+
+export const blackjacksCheck = ({ getters, dispatch, commit }) => {
+  const dealerCards = getters['cards/getDealerCards']
+  const playerBj = getters['cards/getPlayerScore'] === 21
+  const dealerBj =
+    dealerCards.some(card => card.rank === 'ace') &&
+    dealerCards.some(card => [10, 'jack', 'queen', 'king'].indexOf(card.rank) !== -1)
+
+  if (playerBj || dealerBj) {
+    commit('cards/reverseDealerCard')
+    dispatch('cards/countScore', 'dealer')
+    dispatch('verdict/checkVerdict')
+    return
+  }
+
+  dispatch('startPlayerTurn')
 }
 
 export const startPlayerTurn = ({ getters, commit, dispatch }) => {
@@ -25,21 +38,15 @@ export const startPlayerTurn = ({ getters, commit, dispatch }) => {
     return
   }
 
-  if (getters['cards/getPlayerScore'] === 21) {
-    dispatch('startDealerTurn')
-    return
-  }
-
   commit('setActivePhaseComponent', 'PlayerActions')
 }
 
 export const hit = ({ dispatch, getters, commit }) => {
   commit('setActivePhaseComponent')
   dispatch('cards/drawRandomCard', 'player')
+
   if (getters['cards/getPlayerScore'] >= 21 && getters['cards/hasSplittedDeckToPlay']) {
-    setTimeout(() => {
-      dispatch('cards/replaceSplittedCards')
-    }, 2500)
+    setTimeout(() => dispatch('cards/replaceSplittedCards'), 2500)
     setTimeout(() => {
       dispatch('cards/drawRandomCard', 'player')
       dispatch('startPlayerTurn')
@@ -51,9 +58,7 @@ export const hit = ({ dispatch, getters, commit }) => {
     return
   }
 
-  setTimeout(() => {
-    commit('setActivePhaseComponent', 'PlayerActions')
-  }, 500)
+  setTimeout(() => commit('setActivePhaseComponent', 'PlayerActions'), 500)
 }
 
 export const stand = ({ dispatch, getters, commit }) => {
@@ -111,25 +116,15 @@ export const startDealerTurn = ({ getters, commit, dispatch }) => {
   commit('cards/reverseDealerCard')
   dispatch('cards/countScore', 'dealer')
 
-  const splitted = !!getters['cards/getPlayerSplittedCards'].length
-  const singleDeckPlayerBlackjack =
-    !getters['cards/getPlayerSplittedCards'].length &&
-    getters['cards/getPlayerCards'].length === 2 &&
-    getters['cards/getPlayerScore'] === 21
+  const notSplitted = !getters['cards/getPlayerSplittedCards'].length
   const splittedDecksPlayerBlackjacks =
     getters['cards/getPlayerSplittedCards'].length === 2 &&
     getters['cards/getPlayerSplittedScore'] === 21 &&
     getters['cards/getPlayerCards'].length === 2 &&
     getters['cards/getPlayerScore'] === 21
   const playerOver21 = getters['cards/getPlayerScore'] > 21
-  const dealerBlackjack = getters['cards/getDealerScore'] === 21
 
-  if (
-    singleDeckPlayerBlackjack ||
-    splittedDecksPlayerBlackjacks ||
-    dealerBlackjack ||
-    (playerOver21 && !splitted)
-  ) {
+  if (splittedDecksPlayerBlackjacks || (playerOver21 && notSplitted)) {
     dispatch('verdict/checkVerdict')
     return
   }
