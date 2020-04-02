@@ -1,7 +1,10 @@
-export const newGame = ({ dispatch, commit }) => {
+export const newGame = ({ dispatch, commit, state }) => {
   commit('setActivePhaseComponent')
   commit('verdict/setVerdictMsg', '')
-  dispatch('cards/prepareNewDeck')
+  // sort cards if less than half of deck
+  if (state.cards.deck.length < 26) {
+    dispatch('cards/prepareNewDeck')
+  }
   dispatch('bets/countCoins')
   // deal 4 cards from deck
   for (let i = 0; i < 4; i++) {
