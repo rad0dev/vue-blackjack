@@ -12,13 +12,43 @@
     <template slot="start">
       <b-navbar-item
         tag="router-link"
-        :to="{ path: '/' }">
+        :to="{ path: '/' }"
+      >
         Home
       </b-navbar-item>
       <b-navbar-item
         tag="router-link"
-        :to="{ path: '/game' }">
+        :to="{ path: '/game' }"
+      >
         Game
+      </b-navbar-item>
+    </template>
+    <template slot="end" v-if="isAuthenticated">
+      <b-navbar-item tag="div">
+        <a
+          class="button is-light"
+          @click="logout"
+        >
+          Logout
+        </a>
+      </b-navbar-item>
+    </template>
+    <template slot="end" v-else>
+      <b-navbar-item tag="div">
+        <div class="buttons">
+          <router-link
+            class="button is-primary"
+            :to="{ path: '/login' }"
+          >
+            <strong>Login</strong>
+          </router-link>
+          <router-link
+            class="button is-light"
+            :to="{ path: '/register' }"
+          >
+            Register
+          </router-link>
+        </div>
       </b-navbar-item>
     </template>
   </b-navbar>
@@ -26,7 +56,17 @@
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  computed: {
+    isAuthenticated () {
+      return this.$store.getters['auth/isAuthenticated']
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('auth/logout')
+    }
+  }
 }
 </script>
 
