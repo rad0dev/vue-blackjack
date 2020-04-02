@@ -67,6 +67,9 @@ const actions = {
       case 'surrender':
         dispatch('verdictSurrender')
         break
+      case 'insurance':
+        dispatch('verdictInsurance')
+        break
     }
     commit('setActivePhaseComponent', 'Verdict', { root: true })
 
@@ -106,6 +109,10 @@ const actions = {
   verdictSurrender: ({ rootState, rootGetters, commit }) => {
     commit('setVerdictMsg', 'Surrender')
     commit('bets/setFunds', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] / 2), { root: true })
+  },
+  verdictInsurance: ({ rootState, commit }) => {
+    commit('setVerdictMsg', 'Insurance paid')
+    commit('bets/setFunds', rootState.bets.funds + rootState.bets.betPrimary, { root: true })
   }
 }
 

@@ -30,3 +30,15 @@ export const canSurrender = (state) => {
   }
   return false
 }
+
+export const canInsurance = (state) => {
+  if (
+    !state.cards.dealtCards.playerSplitted.length &&
+    state.cards.dealtCards.player.length === 2 &&
+    state.cards.dealtCards.dealer[1].rank === 'ace' &&
+    state.bets.funds >= Math.round(state.bets.betPrimary)
+  ) {
+    return true
+  }
+  return false
+}

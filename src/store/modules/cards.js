@@ -53,7 +53,7 @@ const actions = {
       receiver,
       card: state.deck[cardIndex]
     }
-    if (state.dealtCards.dealer.length === 1 && receiver === 'dealer') {
+    if (!state.dealtCards.dealer.length && receiver === 'dealer') {
       payload.card.reversed = true
     }
     commit('addNewCard', payload)
@@ -123,9 +123,9 @@ const mutations = {
     state.dealtCards[receiver].push(card)
   },
   reverseDealerCard: (state) => {
-    const reversedCard = state.dealtCards.dealer.pop()
+    const reversedCard = state.dealtCards.dealer.shift()
     reversedCard.reversed = false
-    state.dealtCards.dealer.push(reversedCard)
+    state.dealtCards.dealer.unshift(reversedCard)
   },
   setScore: (state, { receiver, score }) => {
     state.score[receiver] = score

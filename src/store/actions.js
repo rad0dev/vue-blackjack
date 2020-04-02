@@ -87,6 +87,23 @@ export const surrender = ({ commit, dispatch }) => {
   dispatch('verdict/verdict', 'surrender')
 }
 
+export const insurance = ({ commit, dispatch, getters, state }) => {
+  const insuranceAmount = Math.round(state.bets.betPrimary / 2)
+  commit('cards/reverseDealerCard')
+  dispatch('cards/countScore', 'dealer')
+  commit('bets/setFunds', state.bets.funds - insuranceAmount)
+  commit('bets/setBetSecondary', insuranceAmount)
+
+  const needToBlackjack = [10, 'jack', 'queen', 'king']
+  if (needToBlackjack.indexOf(getters['cards/getDealerCards'][0].rank) !== -1) {
+    commit('cards/reverseDealerCard')
+    dispatch('cards/countScore', 'dealer')
+    dispatch('verdict/verdict', 'insurance')
+    return
+  }
+  dispatch('verdict/verdict', 'lose')
+}
+
 export const startDealerTurn = ({ getters, commit, dispatch }) => {
   commit('cards/reverseDealerCard')
   dispatch('cards/countScore', 'dealer')

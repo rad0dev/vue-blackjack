@@ -43,6 +43,15 @@
     >
       Surrender
     </b-button>
+    <b-button
+      size="is-large"
+      type="is-success"
+      v-if="canInsurance"
+      @click="insurance()"
+      class="player-actions__button"
+    >
+      Insurance
+    </b-button>
   </div>
 </template>
 
@@ -55,12 +64,14 @@ export default {
     'stand',
     'split',
     'double',
-    'surrender'
+    'surrender',
+    'insurance'
   ]),
   computed: mapGetters([
     'canSplit',
     'canDouble',
-    'canSurrender'
+    'canSurrender',
+    'canInsurance'
   ])
 }
 </script>
