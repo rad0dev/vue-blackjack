@@ -1,41 +1,52 @@
 <template>
-  <div id="signup">
-    <div class="signup-form">
-      <form @submit.prevent="onSubmit">
-        <div class="input">
-          <label for="email">Mail</label>
-          <input
-            type="email"
-            id="email"
-            v-model="email">
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-half">
+
+          <form @submit.prevent="onSubmit">
+
+            <b-field label="Email">
+              <b-input
+                type="email"
+                v-model="email"
+              >
+              </b-input>
+            </b-field>
+
+            <b-field label="Nickname">
+              <b-input v-model="nickname"></b-input>
+            </b-field>
+
+            <b-field label="Password">
+              <b-input
+                type="password"
+                v-model="password"
+              ></b-input>
+            </b-field>
+
+            <b-field label="Confirm Password">
+              <b-input
+                type="password"
+                v-model="confirmPassword"
+              ></b-input>
+            </b-field>
+
+            <br>
+
+            <b-button
+              type="is-primary"
+              native-type="submit"
+              inverted
+              outlined
+            >Register</b-button>
+
+          </form>
+
         </div>
-        <div class="input">
-          <label for="email">Nickname</label>
-          <input
-            type="text"
-            id="nickname"
-            v-model="nickname">
-        </div>
-        <div class="input">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password">
-        </div>
-        <div class="input">
-          <label for="confirm-password">Confirm Password</label>
-          <input
-            type="password"
-            id="confirm-password"
-            v-model="confirmPassword">
-        </div>
-        <div class="submit">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

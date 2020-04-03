@@ -1,10 +1,12 @@
 <template>
-  <div class="game-container">
-    <dealer-mat></dealer-mat>
-    <transition name="fade" mode="out-in">
-      <component class="middle-mat" :is="activePhaseComponent || 'Empty'"></component>
-    </transition>
-    <player-mat></player-mat>
+  <div class="container">
+    <div class="game-container">
+      <dealer-mat></dealer-mat>
+      <transition name="fade" mode="out-in">
+        <component class="middle-mat" :is="activePhaseComponent || 'Empty'"></component>
+      </transition>
+      <player-mat></player-mat>
+    </div>
   </div>
 </template>
 

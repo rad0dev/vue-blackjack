@@ -26,6 +26,7 @@ $cyan:         hsl(204, 86%,  53%) !default;
 $blue:         hsl(217, 71%,  53%) !default;
 $purple:       hsl(271, 100%, 71%) !default;
 $red:          hsl(348, 100%, 61%) !default;
+$dark-green:   hsl(136, 52%, 19%) !default;
 
 // Typography
 $family-sans-serif: 'Quicksand', sans-serif;
@@ -75,7 +76,7 @@ $variable-columns: true !default;
 
 // The default Bulma derived variables are declared below
 
-$primary: $turquoise !default;
+$primary: $dark-green !default;
 
 $info: $cyan !default;
 $success: $green !default;
@@ -95,8 +96,9 @@ $cyan-invert: findColorInvert($cyan) !default;
 $blue-invert: findColorInvert($blue) !default;
 $purple-invert: findColorInvert($purple) !default;
 $red-invert: findColorInvert($red) !default;
+$dark-green-invert: findColorInvert($dark-green) !default;
 
-$primary-invert: $turquoise-invert !default;
+$primary-invert: $dark-green-invert !default;
 $info-invert: $cyan-invert !default;
 $success-invert: $green-invert !default;
 $warning-invert: $yellow-invert !default;
@@ -150,3 +152,5 @@ $size-small: $size-7 !default;
 $size-normal: $size-6 !default;
 $size-medium: $size-5 !default;
 $size-large: $size-4 !default;
+
+$label-color: #ffffff;
