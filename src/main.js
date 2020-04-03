@@ -2,8 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './utils/buefy'
-import './utils/axios'
+import './plugins/axios'
+import './plugins/vuelidate'
+import './plugins/buefy'
 
 Vue.config.productionTip = false
 

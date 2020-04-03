@@ -2,19 +2,26 @@
   <section class="section">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-half">
+        <div class="column is-one-quarter">
 
           <form @submit.prevent="onSubmit">
 
-            <b-field label="Email">
+            <b-field
+              label="Email"
+              :type="{'is-danger': $v.email.$error}"
+              :message="{'This email is invalid': $v.email.$error}"
+            >
               <b-input
                 type="email"
                 v-model="email"
+                @blur="$v.email.$touch()"
               >
               </b-input>
             </b-field>
 
-            <b-field label="Password">
+            <b-field
+              label="Password"
+            >
               <b-input
                 type="password"
                 v-model="password"
@@ -39,6 +46,8 @@
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators'
+
 export default {
   data () {
     return {
@@ -53,6 +62,12 @@ export default {
         password: this.password
       }
       this.$store.dispatch('auth/login', formData)
+    }
+  },
+  validations: {
+    email: {
+      required,
+      email
     }
   }
 }
