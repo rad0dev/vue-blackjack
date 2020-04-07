@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import SvgCard from '../../assets/img/svg-cards.svg'
+import SvgCard from '../Reusables/SvgCard'
 
 export default {
   components: { SvgCard },
