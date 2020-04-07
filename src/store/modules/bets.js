@@ -1,9 +1,13 @@
-const state = {
-  funds: 500,
-  betCoins: [],
-  betPrimary: 0,
-  betSecondary: 0
+const initialState = () => {
+  return {
+    funds: 500,
+    betCoins: [],
+    betPrimary: 0,
+    betSecondary: 0
+  }
 }
+
+const state = initialState()
 
 const getters = {
   getBet (state) {
@@ -12,14 +16,15 @@ const getters = {
 }
 
 const actions = {
-  countCoins ({ state, commit }) {
+  countCoins ({ state, commit, dispatch }) {
     let bet = 0
     if (state.betCoins.length) {
       bet = state.betCoins.reduce((a, b) => {
         return a + b
       })
     }
-    commit('setBetPrimary', bet)
+    commit('verdict/setHighestBet', bet, { root: true })
+    dispatch('setBetPrimaryAndHighscore', bet)
     commit('clearBetCoins')
   },
   tossACoin ({ state, commit }, amount) {
@@ -35,13 +40,28 @@ const actions = {
     commit('setFunds', state.funds - state.betPrimary)
     commit('setBetSecondary', state.betPrimary)
   },
-  doubleBet ({ state, commit }) {
+  doubleBet ({ state, commit, dispatch }) {
     commit('setFunds', state.funds - state.betPrimary)
-    commit('setBetPrimary', state.betPrimary * 2)
+    dispatch('setBetPrimaryAndHighscore', state.betPrimary * 2)
+  },
+  setFundsAndHighscore ({ rootState, commit }, funds) {
+    if (funds > rootState.verdict.highestBalance) {
+      commit('verdict/setHighestBalance', funds, { root: true })
+    }
+    commit('setFunds', funds)
+  },
+  setBetPrimaryAndHighscore ({ rootState, commit }, bet) {
+    if (bet > rootState.verdict.highestBet) {
+      commit('verdict/setHighestBet', bet)
+    }
+    commit('setBetPrimary', bet)
   }
 }
 
 const mutations = {
+  reset (state) {
+    Object.assign(state, initialState())
+  },
   pushCoin (state, bet) {
     state.betCoins.push(parseInt(bet))
   },

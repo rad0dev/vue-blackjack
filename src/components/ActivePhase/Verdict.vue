@@ -10,11 +10,6 @@ export default {
     verdictMsg () {
       return this.$store.state.verdict.verdictMsg
     }
-  },
-  methods: {
-    newGame () {
-      this.$store.dispatch('newGame')
-    }
   }
 }
 </script>

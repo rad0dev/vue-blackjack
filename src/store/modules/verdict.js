@@ -1,6 +1,13 @@
-const state = {
-  verdictMsg: ''
+const initialState = () => {
+  return {
+    verdictMsg: '',
+    highestBalance: 500,
+    highestBet: 0,
+    dealsWon: 0
+  }
 }
+
+const state = initialState()
 
 const actions = {
   checkVerdict: ({ rootGetters, dispatch }) => {
@@ -50,7 +57,7 @@ const actions = {
 
     dispatch('verdict', 'lose')
   },
-  verdict: ({ dispatch, commit, rootGetters }, verdict) => {
+  verdict: ({ dispatch, commit, rootGetters, rootState }, verdict) => {
     switch (verdict) {
       case 'lose':
         dispatch('verdictLose')
@@ -74,51 +81,72 @@ const actions = {
     commit('setActivePhaseComponent', 'Verdict', { root: true })
 
     if (rootGetters['cards/getPlayerSplittedCards'].length) {
-      setTimeout(() => {
-        commit('bets/setBetSecondary', null, { root: true })
-        dispatch('cards/replaceSplittedCards', null, { root: true })
-        dispatch('cards/countScore', 'player', { root: true })
-        commit('cards/setPlayerSplittedDealtCards', null, { root: true })
-        commit('setActivePhaseComponent', null, { root: true })
-        dispatch('checkVerdict')
-      }, 3000)
+      setTimeout(() => dispatch('runSplittedDeckVerdict'), 3000)
       return
     }
 
-    setTimeout(() => {
-      commit('bets/setBetPrimary', null, { root: true })
-      commit('cards/clearCardsAndScore', null, { root: true })
-      commit('setActivePhaseComponent', 'Bets', { root: true })
-    }, 3000)
+    if (!rootState.bets.funds > 0) {
+      setTimeout(() => dispatch('runGameOver'), 3000)
+      return
+    }
+
+    setTimeout(() => dispatch('runBets', null, { root: true }), 3000)
+  },
+  runSplittedDeckVerdict: ({ commit, dispatch }) => {
+    commit('bets/setBetSecondary', null, { root: true })
+    dispatch('cards/replaceSplittedCards', null, { root: true })
+    dispatch('cards/countScore', 'player', { root: true })
+    commit('cards/setPlayerSplittedDealtCards', null, { root: true })
+    commit('setActivePhaseComponent', null, { root: true })
+    dispatch('checkVerdict')
+  },
+  runGameOver: ({ commit }) => {
+    commit('bets/setBetPrimary', null, { root: true })
+    commit('cards/clearCardsAndScore', null, { root: true })
+    commit('setActivePhaseComponent', 'GameOver', { root: true })
   },
   verdictLose: ({ commit }) => {
     commit('setVerdictMsg', 'You Lost!')
   },
-  verdictWin: ({ rootState, rootGetters, commit }) => {
+  verdictWin: ({ rootState, rootGetters, commit, dispatch }) => {
+    commit('dealsWonIncrement')
     commit('setVerdictMsg', 'You Won!')
-    commit('bets/setFunds', rootState.bets.funds + rootGetters['bets/getBet'] * 2, { root: true })
+    dispatch('bets/setFundsAndHighscore', rootState.bets.funds + rootGetters['bets/getBet'] * 2, { root: true })
   },
-  verdictPush: ({ rootState, rootGetters, commit }) => {
+  verdictPush: ({ rootState, rootGetters, commit, dispatch }) => {
     commit('setVerdictMsg', 'Push!')
-    commit('bets/setFunds', rootState.bets.funds + rootGetters['bets/getBet'], { root: true })
+    dispatch('bets/setFundsAndHighscore', rootState.bets.funds + rootGetters['bets/getBet'], { root: true })
   },
-  verdictBlackjack: ({ rootState, rootGetters, commit }) => {
+  verdictBlackjack: ({ rootState, rootGetters, commit, dispatch }) => {
+    commit('dealsWonIncrement')
     commit('setVerdictMsg', 'Blackjack!')
-    commit('bets/setFunds', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] * 2.5), { root: true })
+    dispatch('bets/setFundsAndHighscore', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] * 2.5), { root: true })
   },
-  verdictSurrender: ({ rootState, rootGetters, commit }) => {
+  verdictSurrender: ({ rootState, rootGetters, commit, dispatch }) => {
     commit('setVerdictMsg', 'Surrender')
-    commit('bets/setFunds', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] / 2), { root: true })
+    dispatch('bets/setFundsAndHighscore', rootState.bets.funds + Math.floor(rootGetters['bets/getBet'] / 2), { root: true })
   },
-  verdictInsurance: ({ rootState, commit }) => {
+  verdictInsurance: ({ rootState, commit, dispatch }) => {
     commit('setVerdictMsg', 'Insurance paid')
-    commit('bets/setFunds', rootState.bets.funds + rootState.bets.betPrimary, { root: true })
+    dispatch('bets/setFundsAndHighscore', rootState.bets.funds + rootState.bets.betPrimary, { root: true })
   }
 }
 
 const mutations = {
-  setVerdictMsg: (state, msg) => {
+  setVerdictMsg (state, msg) {
     state.verdictMsg = msg
+  },
+  setHighestBet (state, bet) {
+    state.highestBet = bet
+  },
+  setHighestBalance (state, balance) {
+    state.highestBalance = balance
+  },
+  dealsWonIncrement (state) {
+    state.dealsWon += 1
+  },
+  reset (state) {
+    Object.assign(state, initialState())
   }
 }
 

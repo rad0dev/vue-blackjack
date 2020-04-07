@@ -1,17 +1,21 @@
-const state = {
-  cardsRanks: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'jack', 'queen', 'king', 'ace'],
-  cardsSuits: ['heart', 'diamond', 'club', 'spade'],
-  deck: [],
-  dealtCards: {
-    dealer: [],
-    player: [],
-    playerSplitted: []
-  },
-  score: {
-    dealer: 0,
-    player: 0
+const initialState = () => {
+  return {
+    cardsRanks: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'jack', 'queen', 'king', 'ace'],
+    cardsSuits: ['heart', 'diamond', 'club', 'spade'],
+    deck: [],
+    dealtCards: {
+      dealer: [],
+      player: [],
+      playerSplitted: []
+    },
+    score: {
+      dealer: 0,
+      player: 0
+    }
   }
 }
+
+const state = initialState()
 
 const getters = {
   getPlayerCards: (state) => {
@@ -106,6 +110,9 @@ const actions = {
 }
 
 const mutations = {
+  reset (state) {
+    Object.assign(state, initialState())
+  },
   clearCardsAndScore: (state) => {
     state.dealtCards.player = []
     state.dealtCards.playerSplitted = []

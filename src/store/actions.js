@@ -1,4 +1,11 @@
-export const newGame = ({ dispatch, commit, state }) => {
+export const newGame = ({ commit, dispatch }) => {
+  commit('cards/reset')
+  commit('bets/reset')
+  commit('verdict/reset')
+  dispatch('runBets')
+}
+
+export const newHand = ({ dispatch, commit, state }) => {
   commit('setActivePhaseComponent')
   commit('verdict/setVerdictMsg', '')
   // sort cards if less than half of deck
@@ -11,6 +18,12 @@ export const newGame = ({ dispatch, commit, state }) => {
     setTimeout(() => dispatch('cards/drawRandomCard', i % 2 ? 'dealer' : 'player'), i * 500)
   }
   setTimeout(() => dispatch('blackjacksCheck'), 2000)
+}
+
+export const runBets = ({ commit }) => {
+  commit('bets/setBetPrimary', null)
+  commit('cards/clearCardsAndScore', null)
+  commit('setActivePhaseComponent', 'Bets')
 }
 
 export const blackjacksCheck = ({ getters, dispatch, commit }) => {

@@ -53,7 +53,7 @@ export default {
       this.$store.dispatch('bets/pickupACoin')
     },
     makeDeal () {
-      this.$store.dispatch('newGame')
+      this.$store.dispatch('newHand')
     }
   }
 }

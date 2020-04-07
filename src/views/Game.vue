@@ -18,6 +18,7 @@ import Verdict from '../components/ActivePhase/Verdict'
 import Welcome from '../components/ActivePhase/Welcome'
 import Bets from '../components/ActivePhase/Bets'
 import Empty from '../components/ActivePhase/Empty'
+import GameOver from '../components/ActivePhase/GameOver'
 
 export default {
   computed: {
@@ -32,7 +33,8 @@ export default {
     Verdict,
     Welcome,
     Bets,
-    Empty
+    Empty,
+    GameOver
   }
 }
 </script>

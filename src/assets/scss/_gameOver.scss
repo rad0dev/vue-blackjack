@@ -1,0 +1,30 @@
+.game-over {
+  flex-direction: column;
+
+  h2 {
+    font-size: 32px;
+    margin-bottom: .5em;
+  }
+
+  .columns {
+    width: 450px;
+  }
+
+  &__scorelist {
+
+    li {
+      line-height: 1.2;
+      margin-bottom: .5em;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      float: right;
+      color: #fff;
+    }
+  }
+}
