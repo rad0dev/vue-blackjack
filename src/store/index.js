@@ -15,7 +15,21 @@ Vue.use(Vuex)
 
 const vuexLocalStorage = new VuexPersist({
   key: 'vue-blackjack',
-  storage: window.localStorage
+  storage: window.localStorage,
+  reducer: (state) => ({
+    activePhaseComponent: state.activePhaseComponent,
+    bets: {
+      funds: state.bets.funds,
+      betCoins: state.bets.betCoins,
+      betPrimary: state.bets.betPrimary,
+      betSecondary: state.bets.betSecondary
+    },
+    cards: {
+      deck: state.cards.deck,
+      dealtCards: state.cards.dealtCards,
+      score: state.cards.score
+    }
+  })
 })
 
 export default new Vuex.Store({

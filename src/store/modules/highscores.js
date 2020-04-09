@@ -6,6 +6,9 @@ const state = {
 
 const getters = {
   getHighscoresData (state) {
+    if (!state.highscores) {
+      return
+    }
     const data = []
     Object.entries(state.highscores).forEach(([key, value]) => {
       data.push(value)
