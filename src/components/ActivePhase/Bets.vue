@@ -35,6 +35,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      disabled: false
+    }
+  },
   computed: {
     betCoins () {
       return this.$store.state.bets.betCoins
@@ -53,7 +58,11 @@ export default {
       this.$store.dispatch('bets/pickupACoin')
     },
     makeDeal () {
+      if (this.disabled) {
+        return
+      }
       this.$store.dispatch('newHand')
+      this.disabled = true
     }
   }
 }

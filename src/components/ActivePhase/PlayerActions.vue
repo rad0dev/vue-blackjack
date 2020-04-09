@@ -3,7 +3,7 @@
     <b-button
       size="is-large"
       type="is-success"
-      @click="hit()"
+      @click="action('hit')"
       class="player-actions__button"
     >
       Hit
@@ -11,7 +11,7 @@
     <b-button
       size="is-large"
       type="is-success"
-      @click="stand()"
+      @click="action('stand')"
       class="player-actions__button"
     >
       Stand
@@ -20,7 +20,7 @@
       size="is-large"
       type="is-success"
       v-if="canSplit"
-      @click="split()"
+      @click="action('split')"
       class="player-actions__button"
     >
       Split
@@ -29,7 +29,7 @@
       size="is-large"
       type="is-success"
       v-if="canDouble"
-      @click="double()"
+      @click="action('double')"
       class="player-actions__button"
     >
       Double
@@ -38,7 +38,7 @@
       size="is-large"
       type="is-success"
       v-if="canSurrender"
-      @click="surrender()"
+      @click="action('surrender')"
       class="player-actions__button"
     >
       Surrender
@@ -47,7 +47,7 @@
       size="is-large"
       type="is-success"
       v-if="canInsurance"
-      @click="insurance()"
+      @click="action('insurance')"
       class="player-actions__button"
     >
       Insurance
@@ -59,14 +59,28 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  methods: mapActions([
-    'hit',
-    'stand',
-    'split',
-    'double',
-    'surrender',
-    'insurance'
-  ]),
+  data () {
+    return {
+      disabled: false
+    }
+  },
+  methods: {
+    action (actionType) {
+      if (this.disabled) {
+        return
+      }
+      this[actionType]()
+      this.disabled = true
+    },
+    ...mapActions([
+      'hit',
+      'stand',
+      'split',
+      'double',
+      'surrender',
+      'insurance'
+    ])
+  },
   computed: mapGetters([
     'canSplit',
     'canDouble',

@@ -24,7 +24,11 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  // computed: mapState('module/verdict', ['highestBalance', 'highestBid', 'dealsWon']),
+  data () {
+    return {
+      disabled: false
+    }
+  },
   computed: mapState({
     highestBalance: state => state.verdict.highestBalance,
     highestBet: state => state.verdict.highestBet,
@@ -32,7 +36,11 @@ export default {
   }),
   methods: {
     newGame () {
+      if (this.disabled) {
+        return
+      }
       this.$store.dispatch('newGame')
+      this.disabled = true
     }
   }
 }
