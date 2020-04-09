@@ -1,18 +1,19 @@
 <template>
-  <section class="section">
-    <div class="container">
+  <div class="container">
+    <div class="page-container">
       <router-link
-        class="button is-primary"
+        class="button is-success is-large"
         :to="{ path: '/game' }"
       >
         Play game
       </router-link>
+      <br>
       <router-link
-        class="button is-primary"
+        class="button is-success is-large"
         :to="{ path: '/highscores' }"
       >
         Highscores
       </router-link>
     </div>
-  </section>
+  </div>
 </template>

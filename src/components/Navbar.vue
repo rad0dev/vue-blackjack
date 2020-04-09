@@ -23,6 +23,12 @@
         >
           Game
         </b-navbar-item>
+        <b-navbar-item
+          tag="router-link"
+          :to="{ path: '/highscores' }"
+        >
+          Highscores
+        </b-navbar-item>
       </template>
       <template slot="end" v-if="isAuthenticated">
         <b-navbar-item tag="div">
