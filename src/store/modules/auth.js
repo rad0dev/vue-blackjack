@@ -30,7 +30,6 @@ const actions = {
       returnSecureToken: true
     })
       .then(res => {
-        console.log(res)
         commit('authUser', {
           token: res.data.idToken,
           userId: res.data.localId
@@ -43,7 +42,7 @@ const actions = {
         dispatch('storeUser', authData)
         dispatch('setLogoutTimer', res.data.expiresIn)
       })
-      .catch(error => console.warn(error))
+      .catch(() => {})
   },
   login ({ commit, dispatch }, authData) {
     authAxios.post('/accounts:signInWithPassword?key=AIzaSyB4wPOMwY95PRaeUY6ub4JmD0HYmMFRGow', {
@@ -52,7 +51,6 @@ const actions = {
       returnSecureToken: true
     })
       .then(res => {
-        console.log(res)
         const now = new Date()
         const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
         localStorage.setItem('token', res.data.idToken)
@@ -65,7 +63,7 @@ const actions = {
         dispatch('setLogoutTimer', res.data.expiresIn)
         router.replace('/')
       })
-      .catch(error => console.warn(error))
+      .catch(() => {})
   },
   tryAutoLogin ({ commit }) {
     const token = localStorage.getItem('token')
@@ -95,8 +93,8 @@ const actions = {
       return
     }
     globalAxios.post('/users.json' + '?auth=' + state.idToken, userData)
-      .then(res => console.log(res))
-      .catch(error => console.warn(error))
+      .then(() => {})
+      .catch(() => {})
   },
   fetchUser ({ commit, state }) {
     if (!state.idToken) {
@@ -111,10 +109,9 @@ const actions = {
           user.id = key
           users.push(user)
         }
-        console.log(users)
         commit('storeUser', users[0])
       })
-      .catch(error => console.log(error))
+      .catch(() => {})
   }
 }
 

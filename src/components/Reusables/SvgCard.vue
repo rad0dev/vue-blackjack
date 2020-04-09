@@ -24,11 +24,6 @@
 <script>
 import SvgCard from '../../assets/img/svg-cards.svg'
 export default {
-  watch: {
-    card: function (newValue, oldValue) {
-      console.log('card', 'newValue', newValue, 'oldValue', oldValue)
-    }
-  },
   props: ['card', 'reversed'],
   data () {
     return {
