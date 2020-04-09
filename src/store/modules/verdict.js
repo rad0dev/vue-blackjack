@@ -100,7 +100,14 @@ const actions = {
     commit('setActivePhaseComponent', null, { root: true })
     dispatch('checkVerdict')
   },
-  runGameOver: ({ commit }) => {
+  runGameOver: ({ commit, rootGetters, dispatch, state }) => {
+    if (rootGetters['auth/isAuthenticated']) {
+      dispatch('highscores/sendScore', {
+        highestBalance: state.highestBalance,
+        highestBet: state.highestBet,
+        dealsWon: state.dealsWon
+      }, { root: true })
+    }
     commit('bets/setBetPrimary', null, { root: true })
     commit('cards/clearCardsAndScore', null, { root: true })
     commit('setActivePhaseComponent', 'GameOver', { root: true })

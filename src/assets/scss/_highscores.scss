@@ -1,0 +1,21 @@
+.highscoresTable {
+  table {
+    background-color: transparent;
+    color: #fff;
+
+    td {
+      border: none;
+    }
+
+    thead {
+      font-size: 1.2em;
+
+      td,
+      th {
+        border: 1px solid #dbdbdb;
+        border-width: 0 0 1px;
+        color: #fff;
+      }
+    }
+  }
+}

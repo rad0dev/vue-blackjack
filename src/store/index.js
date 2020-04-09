@@ -6,6 +6,7 @@ import bets from './modules/bets'
 import cards from './modules/cards'
 import verdict from './modules/verdict'
 import auth from './modules/auth'
+import highscores from './modules/highscores'
 import * as mutations from './mutations'
 import * as getters from './getters'
 import * as actions from './actions'
@@ -26,7 +27,8 @@ export default new Vuex.Store({
     bets,
     cards,
     verdict,
-    auth
+    auth,
+    highscores
   },
   plugins: [vuexLocalStorage.plugin]
 })

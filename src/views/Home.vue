@@ -1,14 +1,18 @@
 <template>
   <section class="section">
     <div class="container">
-      <h1>Home page</h1>
+      <router-link
+        class="button is-primary"
+        :to="{ path: '/game' }"
+      >
+        Play game
+      </router-link>
+      <router-link
+        class="button is-primary"
+        :to="{ path: '/highscores' }"
+      >
+        Highscores
+      </router-link>
     </div>
   </section>
 </template>
-
-<script>
-
-export default {
-  name: 'Home'
-}
-</script>
