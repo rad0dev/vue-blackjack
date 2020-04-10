@@ -7,13 +7,6 @@
     class="cards__card"
   >
     <use
-      v-if="reversed"
-      v-bind="{'xlink:href' : SvgCard + '#back' }"
-      x="0"
-      y="0"
-    />
-    <use
-      v-else
       v-bind="{'xlink:href' : makeCardHref(card) }"
       x="0"
       y="0"
@@ -23,21 +16,12 @@
 
 <script>
 import SvgCard from '../../assets/img/svg-cards.svg'
+
 export default {
-  watch: {
-    card: function (newValue, oldValue) {
-      console.log('card', 'newValue', newValue, 'oldValue', oldValue)
-    }
-  },
   props: ['card', 'reversed'],
-  data () {
-    return {
-      SvgCard
-    }
-  },
   methods: {
     makeCardHref (card) {
-      if (card.reversed) return SvgCard + '#back'
+      if (!card || card.reversed) return SvgCard + '#back'
       const rank = card.rank === 'ace' ? 1 : card.rank
       return SvgCard + '#' + card.suit + '_' + rank
     }
