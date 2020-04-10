@@ -33,7 +33,7 @@ const actions = {
   fetchScores ({ rootState, commit }) {
     globalAxios.get('/scores.json' + '?orderBy="highestBalance"&limitToLast=20')
       .then(res => commit('setHighscores', res.data))
-      .catch(error => console.warn(error))
+      .catch(() => {})
   }
 }
 

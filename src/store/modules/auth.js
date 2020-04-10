@@ -18,9 +18,9 @@ const getters = {
 }
 
 const actions = {
-  setLogoutTimer ({ dispatch }, expirationTime) {
+  setLogoutTimer ({ commit }, expirationTime) {
     setTimeout(() => {
-      dispatch('logout')
+      commit('clearAuthData')
     }, expirationTime * 1000)
   },
   signup ({ commit, dispatch }, authData) {
@@ -30,7 +30,6 @@ const actions = {
       returnSecureToken: true
     })
       .then(res => {
-        console.log(res)
         commit('authUser', {
           token: res.data.idToken,
           userId: res.data.localId
@@ -40,10 +39,16 @@ const actions = {
         localStorage.setItem('token', res.data.idToken)
         localStorage.setItem('userId', res.data.localId)
         localStorage.setItem('expirationDate', expirationDate)
-        dispatch('storeUser', authData)
+        const userData = {
+          email: authData.email,
+          nickname: authData.nickname
+        }
+        dispatch('storeUser', { [res.data.localId]: userData })
+        commit('storeUser', userData)
         dispatch('setLogoutTimer', res.data.expiresIn)
+        router.replace('/')
       })
-      .catch(error => console.warn(error))
+      .catch(() => {})
   },
   login ({ commit, dispatch }, authData) {
     authAxios.post('/accounts:signInWithPassword?key=AIzaSyB4wPOMwY95PRaeUY6ub4JmD0HYmMFRGow', {
@@ -52,7 +57,6 @@ const actions = {
       returnSecureToken: true
     })
       .then(res => {
-        console.log(res)
         const now = new Date()
         const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
         localStorage.setItem('token', res.data.idToken)
@@ -62,10 +66,11 @@ const actions = {
           token: res.data.idToken,
           userId: res.data.localId
         })
+        dispatch('fetchUser')
         dispatch('setLogoutTimer', res.data.expiresIn)
         router.replace('/')
       })
-      .catch(error => console.warn(error))
+      .catch(() => {})
   },
   tryAutoLogin ({ commit }) {
     const token = localStorage.getItem('token')
@@ -94,27 +99,19 @@ const actions = {
     if (!state.idToken) {
       return
     }
-    globalAxios.post('/users.json' + '?auth=' + state.idToken, userData)
-      .then(res => console.log(res))
-      .catch(error => console.warn(error))
+    globalAxios.patch(`/users.json?auth=${state.idToken}`, userData)
+      .then(() => {})
+      .catch(() => {})
   },
   fetchUser ({ commit, state }) {
-    if (!state.idToken) {
+    if (!(state.userId && state.idToken)) {
       return
     }
-    globalAxios.get('/users.json' + '?auth=' + state.idToken)
+    globalAxios.get(`/users/${state.userId}.json?auth=${state.idToken}`)
       .then(res => {
-        const data = res.data
-        const users = []
-        for (const key in data) {
-          const user = data[key]
-          user.id = key
-          users.push(user)
-        }
-        console.log(users)
-        commit('storeUser', users[0])
+        commit('storeUser', res.data)
       })
-      .catch(error => console.log(error))
+      .catch(() => {})
   }
 }
 
@@ -127,6 +124,7 @@ const mutations = {
     state.user = user
   },
   clearAuthData (state) {
+    state.user = null
     state.idToken = null
     state.userId = null
   }
