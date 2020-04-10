@@ -24,53 +24,59 @@ const actions = {
     }, expirationTime * 1000)
   },
   signup ({ commit, dispatch }, authData) {
-    authAxios.post('/accounts:signUp?key=AIzaSyB4wPOMwY95PRaeUY6ub4JmD0HYmMFRGow', {
-      email: authData.email,
-      password: authData.password,
-      returnSecureToken: true
-    })
-      .then(res => {
-        commit('authUser', {
-          token: res.data.idToken,
-          userId: res.data.localId
-        })
-        const now = new Date()
-        const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-        localStorage.setItem('token', res.data.idToken)
-        localStorage.setItem('userId', res.data.localId)
-        localStorage.setItem('expirationDate', expirationDate)
-        const userData = {
-          email: authData.email,
-          nickname: authData.nickname
-        }
-        dispatch('storeUser', { [res.data.localId]: userData })
-        commit('storeUser', userData)
-        dispatch('setLogoutTimer', res.data.expiresIn)
-        router.replace('/')
+    return new Promise((resolve, reject) => {
+      authAxios.post('/accounts:signUp?key=AIzaSyB4wPOMwY95PRaeUY6ub4JmD0HYmMFRGow', {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
       })
-      .catch(() => {})
+        .then(res => {
+          commit('authUser', {
+            token: res.data.idToken,
+            userId: res.data.localId
+          })
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          localStorage.setItem('token', res.data.idToken)
+          localStorage.setItem('userId', res.data.localId)
+          localStorage.setItem('expirationDate', expirationDate)
+          const userData = {
+            email: authData.email,
+            nickname: authData.nickname
+          }
+          dispatch('storeUser', { [res.data.localId]: userData })
+          commit('storeUser', userData)
+          dispatch('setLogoutTimer', res.data.expiresIn)
+          router.replace('/')
+          resolve(true)
+        })
+        .catch(error => reject(error))
+    })
   },
   login ({ commit, dispatch }, authData) {
-    authAxios.post('/accounts:signInWithPassword?key=AIzaSyB4wPOMwY95PRaeUY6ub4JmD0HYmMFRGow', {
-      email: authData.email,
-      password: authData.password,
-      returnSecureToken: true
-    })
-      .then(res => {
-        const now = new Date()
-        const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-        localStorage.setItem('token', res.data.idToken)
-        localStorage.setItem('userId', res.data.localId)
-        localStorage.setItem('expirationDate', expirationDate)
-        commit('authUser', {
-          token: res.data.idToken,
-          userId: res.data.localId
-        })
-        dispatch('fetchUser')
-        dispatch('setLogoutTimer', res.data.expiresIn)
-        router.replace('/')
+    return new Promise((resolve, reject) => {
+      authAxios.post('/accounts:signInWithPassword?key=AIzaSyB4wPOMwY95PRaeUY6ub4JmD0HYmMFRGow', {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
       })
-      .catch(() => {})
+        .then(res => {
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          localStorage.setItem('token', res.data.idToken)
+          localStorage.setItem('userId', res.data.localId)
+          localStorage.setItem('expirationDate', expirationDate)
+          commit('authUser', {
+            token: res.data.idToken,
+            userId: res.data.localId
+          })
+          dispatch('fetchUser')
+          dispatch('setLogoutTimer', res.data.expiresIn)
+          router.replace('/')
+          resolve(true)
+        })
+        .catch(error => reject(error))
+    })
   },
   tryAutoLogin ({ commit }) {
     const token = localStorage.getItem('token')

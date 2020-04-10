@@ -3,7 +3,6 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-one-quarter">
-
           <form @submit.prevent="onSubmit">
 
             <b-field
@@ -49,11 +48,11 @@
               native-type="submit"
               inverted
               outlined
+              :loading="loading"
               :disabled="$v.$invalid"
             >Register</b-button>
 
           </form>
-
         </div>
       </div>
     </div>
@@ -68,17 +67,35 @@ export default {
     return {
       email: '',
       nickname: '',
-      password: ''
+      password: '',
+      loading: false
     }
   },
   methods: {
     onSubmit () {
+      if (this.loading) {
+        return
+      }
+      this.loading = true
       const formData = {
         email: this.email,
         nickname: this.nickname,
         password: this.password
       }
       this.$store.dispatch('auth/signup', formData)
+        .then(() => {
+          this.loading = false
+        })
+        .catch(error => {
+          this.loading = false
+          this.$buefy.dialog.alert({
+            title: 'Error',
+            message: `Error message: ${error.response.data.error.message}`,
+            type: 'is-danger',
+            ariaRole: 'alertdialog',
+            ariaModal: true
+          })
+        })
     }
   },
   validations: {
