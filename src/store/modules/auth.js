@@ -80,16 +80,16 @@ const actions = {
   },
   tryAutoLogin ({ commit }) {
     const token = localStorage.getItem('token')
-    if (!token) {
+    const expirationTime = localStorage.getItem('expirationTime')
+    const userId = localStorage.getItem('userId')
+    if (!token || !expirationTime || !userId) {
       return
     }
-    const expirationTime = parseInt(localStorage.getItem('expirationTime'))
-    const expirationDate = new Date(expirationTime)
+    const expirationDate = new Date(parseInt(expirationTime))
     const now = new Date()
     if (now >= expirationDate) {
       return
     }
-    const userId = localStorage.getItem('userId')
     commit('authUser', {
       token: token,
       userId: userId
