@@ -52,7 +52,7 @@ const actions = {
   },
   setBetPrimaryAndHighscore ({ rootState, commit }, bet) {
     if (bet > rootState.verdict.highestBet) {
-      commit('verdict/setHighestBet', bet)
+      commit('verdict/setHighestBet', bet, { root: true })
     }
     commit('setBetPrimary', bet)
   }

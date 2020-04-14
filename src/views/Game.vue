@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="page-container">
+    <div class="page-container game-container">
       <dealer-mat></dealer-mat>
       <transition
         name="fade"

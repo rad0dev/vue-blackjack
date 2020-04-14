@@ -1,19 +1,17 @@
 html {
   min-height: 100%;
   display: flex;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 body {
-  background: url("../img/background.png");
+  //background: url("../img/background.png");
+  background: rgb(26,89,45);
+  background: linear-gradient(165deg, rgba(26,89,45,1) 0%, rgba(7,27,13,1) 100%);
   background-size: cover;
   background-position: center;
   flex: 1;
-}
-
-.navbar-item,
-.navbar-link {
-  font-size: 18px;
-  font-weight: 700;
 }
 
 .dialog {

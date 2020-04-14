@@ -19,3 +19,19 @@
     }
   }
 }
+
+.navbar-burger span {
+  background: $white;
+}
+
+.navbar-item,
+.navbar-link {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: $desktop - 1px) {
+  .navbar-menu.is-active {
+    background: rgba(255,255,255,.1);
+  }
+}

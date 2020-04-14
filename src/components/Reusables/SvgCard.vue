@@ -7,7 +7,7 @@
     class="cards__card"
   >
     <use
-      v-bind="{'xlink:href' : makeCardHref(card) }"
+      v-bind="{'xlink:href' : cardHref }"
       x="0"
       y="0"
     />
@@ -19,11 +19,11 @@ import SvgCard from '../../assets/img/svg-cards.svg'
 
 export default {
   props: ['card', 'reversed'],
-  methods: {
-    makeCardHref (card) {
-      if (!card || card.reversed) return SvgCard + '#back'
-      const rank = card.rank === 'ace' ? 1 : card.rank
-      return SvgCard + '#' + card.suit + '_' + rank
+  computed: {
+    cardHref () {
+      if (!this.card || this.reversed) return SvgCard + '#back'
+      const rank = this.card.rank === 'ace' ? 1 : this.card.rank
+      return SvgCard + '#' + this.card.suit + '_' + rank
     }
   }
 }

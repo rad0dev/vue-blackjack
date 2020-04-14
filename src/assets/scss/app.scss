@@ -1,16 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
-@import "style";
-@import "navbar";
-@import "game";
-@import "score";
-@import "cards";
-@import "bet";
-@import "coins";
-@import "gameOver";
-@import "highscores";
-@import "home";
-@import "reusables";
-
 @import "~bulma/sass/utilities/initial-variables";
 @import "~bulma/sass/utilities/functions";
 // 1. Set your own initial variables and derived
@@ -39,4 +27,14 @@ $colors: map-merge($colors, $addColors);
 @import "~buefy/src/scss/buefy";
 
 // 4. Provide custom buefy overrides and site styles here
-
+@import "style";
+@import "navbar";
+@import "game";
+@import "score";
+@import "cards";
+@import "bet";
+@import "coins";
+@import "gameOver";
+@import "highscores";
+@import "home";
+@import "reusables";
