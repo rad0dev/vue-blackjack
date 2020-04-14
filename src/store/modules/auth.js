@@ -36,10 +36,10 @@ const actions = {
             userId: res.data.localId
           })
           const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          const expirationTime = now.getTime() + res.data.expiresIn * 1000
           localStorage.setItem('token', res.data.idToken)
           localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
+          localStorage.setItem('expirationTime', expirationTime)
           const userData = {
             email: authData.email,
             nickname: authData.nickname
@@ -62,10 +62,10 @@ const actions = {
       })
         .then(res => {
           const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          const expirationTime = now.getTime() + res.data.expiresIn * 1000
           localStorage.setItem('token', res.data.idToken)
           localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
+          localStorage.setItem('expirationTime', expirationTime)
           commit('authUser', {
             token: res.data.idToken,
             userId: res.data.localId
@@ -83,7 +83,8 @@ const actions = {
     if (!token) {
       return
     }
-    const expirationDate = localStorage.getItem('expirationDate')
+    const expirationTime = parseInt(localStorage.getItem('expirationTime'))
+    const expirationDate = new Date(expirationTime)
     const now = new Date()
     if (now >= expirationDate) {
       return
